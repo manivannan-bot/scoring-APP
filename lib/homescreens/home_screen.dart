@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:scoring_app/homescreens/upcoming_screens.dart';
 import 'package:sizer/sizer.dart';
 
+import '../morescreens/more_screen.dart';
 import '../utils/colours.dart';
 import '../utils/images.dart';
 import '../utils/sizes.dart';
@@ -60,7 +61,8 @@ class _HomeScreenState extends State<HomeScreen>with SingleTickerProviderStateMi
 
                         GestureDetector(
                           onTap: (){
-                            //_displayBottomSheetDoScoring(context);
+                          Navigator.push(context,
+                                                        MaterialPageRoute(builder: (context) => MoreScreen()));
                           },
                           child: Text('Hello!\n prasanth',style: fontMedium.copyWith(
                               fontSize: 15.sp,

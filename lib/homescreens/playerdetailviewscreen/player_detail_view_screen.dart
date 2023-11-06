@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:scoring_app/homescreens/playerdetailviewscreen/player_info_screen.dart';
 import 'package:scoring_app/homescreens/playerdetailviewscreen/player_matches_list.dart';
+import 'package:scoring_app/homescreens/playerdetailviewscreen/player_stats_screen.dart';
+import 'package:scoring_app/homescreens/playerdetailviewscreen/players_team_list.dart';
 
 import 'package:sizer/sizer.dart';
 
@@ -155,8 +158,9 @@ class _PlayerDetailViewScreenState extends State<PlayerDetailViewScreen>with Sin
                 children: [
                   OverviewPlayerScreen(),
                   PlayerMatchesList(),
-                  Container(),
-                  Container(),
+                  PlayerStatsScreen(),
+                  PlayersTeamList(),
+                  PlayerInfoScreen(),
 
                 ]
             ),
