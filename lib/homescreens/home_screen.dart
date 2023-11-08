@@ -61,8 +61,7 @@ class _HomeScreenState extends State<HomeScreen>with SingleTickerProviderStateMi
 
                         GestureDetector(
                           onTap: (){
-                          Navigator.push(context,
-                                                        MaterialPageRoute(builder: (context) => MoreScreen()));
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => MoreScreen()));
                           },
                           child: Text('Hello!\n prasanth',style: fontMedium.copyWith(
                               fontSize: 15.sp,
@@ -125,11 +124,7 @@ class _HomeScreenState extends State<HomeScreen>with SingleTickerProviderStateMi
               child: TabBarView(
                   controller: tabController,
                   children: [
-                    GestureDetector(
-                      onTap:(){
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => LiveScreenHome()));
-                      },
-                        child: LiveScreen()),
+                    LiveScreen(),
                     UpcomingScreen(),
                     CompletedScreen(),
                     ForYouMatches(),

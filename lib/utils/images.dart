@@ -65,7 +65,7 @@ class Images{
   static const String newBatsmanImage = 'assets/images/new_batsman_img.svg';
    static const String moreBgImage = 'assets/images/more_image_bg.png';
    static const String editSymbolIcon = 'assets/images/edit_symbol_icon.svg';
-  // static const String copyIcon = 'assets/images/copy_icon.svg';
+   static const String teamImageGrid = 'assets/images/team_images_grid.png';
   // static const String totalAmountBgImg = 'assets/images/total_amount_bg_img.svg';
   //
   // static const String playVSPitchImg = 'assets/images/play_vs_pitch_image.png';

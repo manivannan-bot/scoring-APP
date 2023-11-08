@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:scoring_app/provider/matches_list_provider.dart';
 import 'package:sizer/sizer.dart';
 
+import '../../models/ScoreCard/score_card_top_model.dart';
 import '../../utils/colours.dart';
 import '../../utils/images.dart';
 import '../../utils/sizes.dart';
@@ -10,7 +12,10 @@ import 'info_screen.dart';
 import 'live_detail_view_screen.dart';
 
 class LiveScreenHome extends StatefulWidget {
-  const LiveScreenHome({super.key});
+  final String matchId;
+  final String teamId;
+
+  const LiveScreenHome(this.matchId, this.teamId, {super.key});
 
   @override
   State<LiveScreenHome> createState() => _LiveScreenHomeState();
@@ -18,15 +23,26 @@ class LiveScreenHome extends StatefulWidget {
 
 class _LiveScreenHomeState extends State<LiveScreenHome>with SingleTickerProviderStateMixin {
   late TabController tabController;
-
+  ScoreCardTopModel? scoreCardTopModel;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     tabController = TabController(length: 4, vsync: this);
+    fetchData();
+  }
+  fetchData(){
+    MatchListProvider().getScoreCardTop(widget.matchId, widget.teamId).then((value) {
+      setState(() {
+        scoreCardTopModel=value;
+      });
+    });
   }
   @override
   Widget build(BuildContext context) {
+    if(scoreCardTopModel==null){
+      return Center(child: CircularProgressIndicator(),);
+    }
     return Scaffold(
       body: Column(
         children: [
@@ -77,7 +93,7 @@ class _LiveScreenHomeState extends State<LiveScreenHome>with SingleTickerProvide
                           children: [
                             Image.asset(Images.teamaLogo,width: 20.w,),
                             Text(
-                              "Csk",
+                              "${scoreCardTopModel!.matches!.team1Name}",
                               // '${matchList!.first.team1Name}',
                               style: fontMedium.copyWith(
                                   fontSize: 14.sp,
@@ -89,7 +105,7 @@ class _LiveScreenHomeState extends State<LiveScreenHome>with SingleTickerProvide
                         Column(
                           children: [
                             Text(
-                              "Csk won the toss \nand choose to bat",
+                              "${scoreCardTopModel!.matches!.tossWinnerName} won the toss \nand choose to ${scoreCardTopModel!.matches!.choseTo} ",
                                 // '${matchList!.first.tossWinnerName} won the Toss\nand Choose to ${matchList!.first.choseTo} ',
                                 textAlign: TextAlign.center,
                                 style: fontRegular.copyWith(
@@ -98,7 +114,8 @@ class _LiveScreenHomeState extends State<LiveScreenHome>with SingleTickerProvide
                                 )
                             ),
                             Text(
-                              "50/3",
+                              "${scoreCardTopModel!.matches!.teams!.totalRuns}/${scoreCardTopModel!.matches!.teams!.totalWickets}"
+                              ,
                                 // '${matchList!.first.teams!.first.totalRuns}/${matchList!.first.teams!.first.totalWickets}',
                                 style: fontMedium.copyWith(
                                     fontSize: 25.sp,
@@ -111,7 +128,7 @@ class _LiveScreenHomeState extends State<LiveScreenHome>with SingleTickerProvide
                                 color: AppColor.primaryColor,
                               ),
                               child: Text(
-                                "Overs:1.2/20",
+                                "Overs:${scoreCardTopModel!.matches!.teams!.currentOverDetails}/${scoreCardTopModel!.matches!.overs}",
                                 // 'Overs: ${matchList!.first.teams!.first.currentOverDetails}/${matchList!.first.overs}',
                                 style: fontMedium.copyWith(
                                   fontSize: 11.sp,
@@ -120,7 +137,7 @@ class _LiveScreenHomeState extends State<LiveScreenHome>with SingleTickerProvide
                               ),
                             ),
                             SizedBox(height: 1.h,),
-                            Text("1st Innings",
+                            Text("${scoreCardTopModel!.matches!.currentInnings}st Innings",
                               // "Innings ${matchList!.first.currentInnings??'0'}",
                               style: fontRegular.copyWith(
                                 fontSize: 12.sp,

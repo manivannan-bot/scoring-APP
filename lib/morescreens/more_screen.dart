@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bounceable/flutter_bounceable.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:scoring_app/morescreens/player_search_screen.dart';
+import 'package:scoring_app/morescreens/teams_all_lists.dart';
+import 'package:scoring_app/morescreens/teams_list_screen.dart';
 import 'package:sizer/sizer.dart';
 import '../utils/colours.dart';
 import '../utils/images.dart';
@@ -157,18 +159,28 @@ class _MoreScreenState extends State<MoreScreen> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(""
-                                "Overview",
-                              style: fontMedium.copyWith(
-                                  fontSize: 16.sp,
-                                  color:  AppColor
-                                      .textColor
-                              ),),
+                            GestureDetector(
+                              onTap: (){
+                                Navigator.push(context,
+                                                              MaterialPageRoute(builder: (context) => TeamAllLists()));
+                              },
+                              child: Text(""
+                                  "Overview",
+                                style: fontMedium.copyWith(
+                                    fontSize: 16.sp,
+                                    color:  AppColor
+                                        .textColor
+                                ),),
+                            ),
                             SizedBox(height: 2.h),
                             const ProfileOption(
                                 "Matches"),
                             const SeparatorDivider(),
-                             const ProfileOption("Following Teams"),
+                             GestureDetector(
+                                 onTap: (){
+                                   Navigator.push(context, MaterialPageRoute(builder: (context) => TeamListScreen()));
+                                 },
+                                 child: const ProfileOption("Following Teams")),
                              const SeparatorDivider(),
                             GestureDetector(
                                 onTap: (){
