@@ -12,8 +12,11 @@ import 'commentry_overs_screen.dart';
 
 
 class CommentaryScreen extends StatefulWidget {
-
-  const CommentaryScreen({super.key});
+ final String matchId;
+ final String batTeamId;
+ final String bowlTeamId;
+ final VoidCallback fetchData;
+  const CommentaryScreen(this.matchId, this.batTeamId, this.bowlTeamId, this.fetchData, {super.key});
 
   @override
   State<CommentaryScreen> createState() => _CommentaryScreenState();
@@ -51,7 +54,7 @@ class _CommentaryScreenState extends State<CommentaryScreen>with SingleTickerPro
       body: Container(
         padding: EdgeInsets.symmetric(vertical: 1.h,horizontal: 0.w),
         width: double.infinity,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
             borderRadius: BorderRadius.only(topRight: Radius.circular(20),topLeft: Radius.circular(20)),
             color: AppColor.lightColor
         ),
@@ -131,8 +134,8 @@ class _CommentaryScreenState extends State<CommentaryScreen>with SingleTickerPro
                   controller: tabController,
                   children:  [
                     CommentaryAllScreen(),
-                    CommentryOvers(),
-                    CommentaryWicketScreen(),
+                    CommentryOvers(widget.matchId,widget.bowlTeamId),
+                    CommentaryWicketScreen(widget.matchId,widget.bowlTeamId),
                   Container(),
                   ]),
             ),

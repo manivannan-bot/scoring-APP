@@ -357,70 +357,72 @@ class _InfoScreenState extends State<InfoScreen> {
                       ],
                     ),
                   ),
-                  Expanded(
-                    child: Column(
-                      children: [
-                        Text("Umpire 2",style: fontRegular.copyWith(
-                          fontSize: 12.sp,
-                          color: AppColor.blackColour,
-                        ),),
-                        SizedBox(height: 1.h,),
-                        Container(
-                          width: 42.w,
-                          height: 16.h,
-                          padding: EdgeInsets.symmetric(horizontal: 4.w,vertical: 1.5.h),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(15),
-                            color: Color(0xffF8F9FA),
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              ClipOval(child: Image.asset('${Images.umpireImage}',width: 16.w,)),
-                              SizedBox(height: 0.5.h,),
-                              Text("Vinayagam",style: fontMedium.copyWith(
-                                fontSize: 12.sp,
-                                color: AppColor.blackColour,
-                              ),),
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
+                  Column(
+                    children: [
+                      Text("Scorer",style: fontRegular.copyWith(
+                        fontSize: 12.sp,
+                        color: AppColor.blackColour,
+                      ),),
+                      SizedBox(height: 1.h,),
+                      Container(
+                        width: 42.w,
+                        height: 16.h,
+                        padding: EdgeInsets.symmetric(horizontal: 4.w,vertical: 1.5.h),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15),
+                          color: Color(0xffF8F9FA),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            ClipOval(child: Image.asset(Images.umpireImage,width: 16.w,)),
+                            SizedBox(height: 0.5.h,),
+                            Text("${matchInfoModel!.data!.proffesionals!.first.scorerName}",style: fontMedium.copyWith(
+                              fontSize: 12.sp,
+                              color: AppColor.blackColour,
+                            ),),
+                          ],
+                        ),
+
+                      )
+                    ],
                   ),
+
+                  // Expanded(
+                  //   child: Column(
+                  //     children: [
+                  //       Text("Umpire 2",style: fontRegular.copyWith(
+                  //         fontSize: 12.sp,
+                  //         color: AppColor.blackColour,
+                  //       ),),
+                  //       SizedBox(height: 1.h,),
+                  //       Container(
+                  //         width: 42.w,
+                  //         height: 16.h,
+                  //         padding: EdgeInsets.symmetric(horizontal: 4.w,vertical: 1.5.h),
+                  //         decoration: BoxDecoration(
+                  //           borderRadius: BorderRadius.circular(15),
+                  //           color: Color(0xffF8F9FA),
+                  //         ),
+                  //         child: Column(
+                  //           crossAxisAlignment: CrossAxisAlignment.center,
+                  //           children: [
+                  //             ClipOval(child: Image.asset('${Images.umpireImage}',width: 16.w,)),
+                  //             SizedBox(height: 0.5.h,),
+                  //             Text("Vinayagam",style: fontMedium.copyWith(
+                  //               fontSize: 12.sp,
+                  //               color: AppColor.blackColour,
+                  //             ),),
+                  //           ],
+                  //         ),
+                  //       )
+                  //     ],
+                  //   ),
+                  // ),
                 ],
               ),
               SizedBox(height: 2.h,),
-              Column(
-                children: [
-                  Text("Scorer",style: fontRegular.copyWith(
-                    fontSize: 12.sp,
-                    color: AppColor.blackColour,
-                  ),),
-                  SizedBox(height: 1.h,),
-                  Container(
-                    width: 42.w,
-                    height: 16.h,
-                    padding: EdgeInsets.symmetric(horizontal: 4.w,vertical: 1.5.h),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15),
-                      color: Color(0xffF8F9FA),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        ClipOval(child: Image.asset(Images.umpireImage,width: 16.w,)),
-                        SizedBox(height: 0.5.h,),
-                        Text("${matchInfoModel!.data!.proffesionals!.first.scorerName}",style: fontMedium.copyWith(
-                          fontSize: 12.sp,
-                          color: AppColor.blackColour,
-                        ),),
-                      ],
-                    ),
 
-                  )
-                ],
-              ),
 
             ],
           ),

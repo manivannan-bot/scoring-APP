@@ -7,7 +7,9 @@ import '../../../utils/colours.dart';
 import '../../../utils/sizes.dart';
 
 class CommentryOvers extends StatefulWidget {
-  const CommentryOvers({super.key});
+  final String matchId;
+  final String bowlTeamId;
+  const CommentryOvers(this.matchId, this.bowlTeamId, {super.key});
   @override
   State<CommentryOvers> createState() => _CommentryOversState();
 }
@@ -15,6 +17,14 @@ class _CommentryOversState extends State<CommentryOvers> {
   final List<Map<String,dynamic>>itemList=[
     {},{},{},{},{},{},{},{},{},{},{},{},
   ];
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
+  }
+  fetchData(){
+
+  }
   @override
   Widget build(BuildContext context) {
     return Padding(

@@ -24,6 +24,8 @@ class LiveScreenHome extends StatefulWidget {
 class _LiveScreenHomeState extends State<LiveScreenHome>with SingleTickerProviderStateMixin {
   late TabController tabController;
   ScoreCardTopModel? scoreCardTopModel;
+  int batTeamId=0;
+  int bowlTeamId=0;
   @override
   void initState() {
     // TODO: implement initState
@@ -35,6 +37,14 @@ class _LiveScreenHomeState extends State<LiveScreenHome>with SingleTickerProvide
     MatchListProvider().getScoreCardTop(widget.matchId, widget.teamId).then((value) {
       setState(() {
         scoreCardTopModel=value;
+        if(value.matches!.team1Id==value.matches!.tossWonBy && value.matches!.choseTo=="Bat"){
+          batTeamId=value.matches!.team1Id;
+          bowlTeamId=value.matches!.team2Id;
+        }else{
+          bowlTeamId=value.matches!.team1Id;
+        batTeamId=value.matches!.team2Id;
+        }
+
       });
     });
   }
@@ -149,7 +159,7 @@ class _LiveScreenHomeState extends State<LiveScreenHome>with SingleTickerProvide
                           children: [
                             Image.asset(Images.teamaLogo,width: 20.w,),
                             Text(
-                              "MI",
+                              "${scoreCardTopModel!.matches!.team2Name}",
                                 // '${matchList!.first.team2Name}',
                                 style:fontMedium.copyWith(
                                     fontSize: 14.sp,
@@ -190,7 +200,7 @@ class _LiveScreenHomeState extends State<LiveScreenHome>with SingleTickerProvide
                 children:  [
                   LiveDetailViewScreen(),
                   ScoreCardScreens(),
-                  CommentaryScreen(),
+                  CommentaryScreen(widget.matchId,batTeamId.toString(),bowlTeamId.toString(),fetchData),
                   InfoScreen(widget.matchId),
                 ]),
           )
