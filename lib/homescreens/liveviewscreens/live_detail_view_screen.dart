@@ -2,26 +2,48 @@ import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dash/flutter_dash.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:scoring_app/provider/matches_list_provider.dart';
 import 'package:sizer/sizer.dart';
 
+import '../../models/ScoreCard/live_scorecard_model.dart';
+import '../../models/ScoreCard/score_card_model.dart';
 import '../../utils/colours.dart';
 import '../../utils/images.dart';
 import '../../utils/sizes.dart';
 
 class LiveDetailViewScreen extends StatefulWidget {
-  const LiveDetailViewScreen({super.key});
+final String matchId;
+
+  const LiveDetailViewScreen(this.matchId,{super.key});
 
   @override
   State<LiveDetailViewScreen> createState() => _LiveDetailViewScreenState();
 }
 
 class _LiveDetailViewScreenState extends State<LiveDetailViewScreen> {
+  LiveScoreCardModel? liveScoreCardModel;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    MatchListProvider().getScoreCardLive(widget.matchId).then((value) {
+      setState(() {
+        liveScoreCardModel=value;
+      });
+    });
+  }
   final List<Map<String, dynamic>> itemList = [
     {},
     {},
   ];
   @override
   Widget build(BuildContext context) {
+    if(liveScoreCardModel==null){
+      return Center(child: CircularProgressIndicator(),);
+    }
+    if(liveScoreCardModel!.data==null){
+      return Center(child: Text('No score found'));
+    }
     return Column(
       children: [
         Container(
@@ -32,12 +54,37 @@ class _LiveDetailViewScreenState extends State<LiveDetailViewScreen> {
                 topRight: Radius.circular(20), topLeft: Radius.circular(20)),
             color: AppColor.blackColour,
           ),
-          child: Text(
-            "CRR: 4.50",
-            style: fontMedium.copyWith(
-              fontSize: 10.sp,
-              color: AppColor.lightColor,
-            ),
+          child: Row(
+            children: [
+              Text(
+                "CRR : ${liveScoreCardModel!.data!.currRunRate!.runRate}",
+                style: fontMedium.copyWith(
+                  fontSize: 10.sp,
+                  color: AppColor.lightColor,
+                ),
+              ),
+              SizedBox(width: 4.w,),
+              (liveScoreCardModel!.data!.teamsName!.first.currentInnings==2)?  Expanded(
+                child: Row( mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "RRR: ${liveScoreCardModel!.data!.currRunRate!.reqRunRate}",
+                      style: fontMedium.copyWith(
+                        fontSize: 10.sp,
+                        color: AppColor.lightColor,
+                      ),
+                    ),
+                    Text(
+                      "Target:${liveScoreCardModel!.data!.currRunRate!.targetScore}",
+                      style: fontMedium.copyWith(
+                        fontSize: 10.sp,
+                        color: AppColor.lightColor,
+                      ),
+                    ),
+                  ],
+                ),
+              ) : Text('')
+            ],
           ),
         ),
         SizedBox(height: 2.h,),
@@ -149,9 +196,9 @@ class _LiveDetailViewScreenState extends State<LiveDetailViewScreen> {
                       ),
                     );
                   },
-                  itemCount: itemList.length,
+                  itemCount: liveScoreCardModel!.data!.batting!.length,
                   itemBuilder: (BuildContext, int index) {
-                    final item = itemList[index];
+                    final item = liveScoreCardModel!.data!.batting![index];
                     return Row(
                       children: [
                         SizedBox(
@@ -162,7 +209,7 @@ class _LiveDetailViewScreenState extends State<LiveDetailViewScreen> {
                               Row(
                                 children: [
                                   Text(
-                                    "Vijay kumar",
+                                    "${item.playerName}",
                                     // "${item.playerName}",
                              style: fontRegular.copyWith(
                                     fontSize: 12.sp,
@@ -170,7 +217,7 @@ class _LiveDetailViewScreenState extends State<LiveDetailViewScreen> {
                                   ),),
                                   SizedBox(width: 1.w,),
                                   // (item.isOut!=1)?
-                                  SvgPicture.asset(Images.batIcon,width: 4.w,color: AppColor.blackColour,)
+                                  (item.stricker==1)?SvgPicture.asset(Images.batIcon,width: 4.w,color: AppColor.blackColour,):Text("")
                                       // :Text(''),
                                 ],
                               ),
@@ -200,23 +247,23 @@ class _LiveDetailViewScreenState extends State<LiveDetailViewScreen> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              Text("55",style: fontRegular.copyWith(
+                              Text("${item.runsScored}",style: fontRegular.copyWith(
                                 fontSize: 12.sp,
                                 color: const Color(0xff777777),
                               ),),
-                              Text("33",style: fontRegular.copyWith(
+                              Text("${item.ballsFaced}",style: fontRegular.copyWith(
                                 fontSize: 12.sp,
                                 color: const Color(0xff777777),
                               ),),
-                              Text("5",style: fontRegular.copyWith(
+                              Text("${item.fours}",style: fontRegular.copyWith(
                                 fontSize: 12.sp,
                                 color: const Color(0xff777777),
                               ),),
-                              Text("3",style: fontRegular.copyWith(
+                              Text("${item.sixes}",style: fontRegular.copyWith(
                                 fontSize: 12.sp,
                                 color: const Color(0xff777777),
                               ),),
-                              Text("300",style: fontRegular.copyWith(
+                              Text("${item.strikeRate}",style: fontRegular.copyWith(
                                 fontSize: 12.sp,
                                 color: const Color(0xff777777),
                               ),),
@@ -293,105 +340,67 @@ class _LiveDetailViewScreenState extends State<LiveDetailViewScreen> {
         const Divider(
           color: Color(0xffD3D3D3),
         ),
-        Padding(
+        (liveScoreCardModel!.data!.bowling !=null)?Padding(
           padding:  EdgeInsets.symmetric(horizontal: 4.w),
-          child: Expanded(
-            child: MediaQuery.removePadding(
-              context: context,
-              removeTop: true, // Remove top system padding (status bar)
-              removeBottom: true,
-              child: ListView.separated(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  // physics: const BouncingScrollPhysics(),
-                  separatorBuilder: (context, _) {
-                    return  Padding(
-                      padding: EdgeInsets.only(bottom: 0.5.h),
-                      child: const DottedLine(
-                        dashColor: Color(0xffD2D2D2),
-                      ),
-                    );
-                  },
-                  itemCount: itemList.length,
-                  itemBuilder: (BuildContext, int index) {
-                    final item = itemList[index];
-                    return Row(
+          child:Row(
+            children: [
+              SizedBox(
+                width: 35.w,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
                       children: [
-                        SizedBox(
-                          width: 35.w,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                children: [
-                                  Text(
-                                    "Vijay kum",
-                                    // "${item.playerName}",
-                                    style: fontRegular.copyWith(
-                                      fontSize: 12.sp,
-                                      color: AppColor.blackColour,
-                                    ),),
-                                  SizedBox(width: 1.w,),
-                                  // (item.isOut!=1)?
-                                  SvgPicture.asset(Images.ballBlackIcon,width: 4.w,color: AppColor.blackColour,)
-                                  // :Text(''),
-                                ],
-                              ),
-                              SizedBox(height: 0.5.h,),
-                              RichText(
-                                  text: TextSpan(children: [
-                                    TextSpan(
-                                        text:
-                                        "Batting",
-                                        style: fontRegular.copyWith(
-                                          fontSize: 11.sp,
-                                          color: const Color(0xff777777),
-                                        )),
-                                    // TextSpan(
-                                    //     text: "b ${item.wicketBowlerName}",
-                                    //     style: fontRegular.copyWith(
-                                    //         fontSize: 11.sp,
-                                    //         color: const Color(0xff777777)
-                                    //     )),
-                                  ])),
-                              SizedBox(height: 1.h,),
-                            ],
-                          ),
-                        ),
-                        SizedBox(width: 5.w,),
-                        Expanded(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Text("5",style: fontRegular.copyWith(
-                                fontSize: 12.sp,
-                                color: const Color(0xff777777),
-                              ),),
-                              Text("3",style: fontRegular.copyWith(
-                                fontSize: 12.sp,
-                                color: const Color(0xff777777),
-                              ),),
-                              Text("10",style: fontRegular.copyWith(
-                                fontSize: 12.sp,
-                                color: const Color(0xff777777),
-                              ),),
-                              Text("30",style: fontRegular.copyWith(
-                                fontSize: 12.sp,
-                                color: const Color(0xff777777),
-                              ),),
-                              Text("9",style: fontRegular.copyWith(
-                                fontSize: 12.sp,
-                                color: const Color(0xff777777),
-                              ),),
-                            ],
-                          ),
-                        ),
+                        Text(
+                          "${liveScoreCardModel!.data!.bowling!.playerName}",
+                          // "${item.playerName}",
+                          style: fontRegular.copyWith(
+                            fontSize: 12.sp,
+                            color: AppColor.blackColour,
+                          ),),
+                        SizedBox(width: 1.w,),
+                        // (item.isOut!=1)?
+                        SvgPicture.asset(Images.ballBlackIcon,width: 4.w,color: AppColor.blackColour,)
+                        // :Text(''),
                       ],
-                    );
-                  }),
-            ),
+                    ),
+                    SizedBox(height: 0.5.h,),
+                  ],
+                ),
+              ),
+              SizedBox(width: 5.w,),
+              Expanded(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Text(
+                      "${liveScoreCardModel!.data!.bowling!.overBall}"
+                      ,style: fontRegular.copyWith(
+                      fontSize: 12.sp,
+                      color: const Color(0xff777777),
+                    ),),
+                    Text( "${liveScoreCardModel!.data!.bowling!.maiden}",style: fontRegular.copyWith(
+                      fontSize: 12.sp,
+                      color: const Color(0xff777777),
+                    ),),
+                    Text( "${liveScoreCardModel!.data!.bowling!.runsConceded}",style: fontRegular.copyWith(
+                      fontSize: 12.sp,
+                      color: const Color(0xff777777),
+                    ),),
+                    Text( "${liveScoreCardModel!.data!.bowling!.wickets}",style: fontRegular.copyWith(
+                      fontSize: 12.sp,
+                      color: const Color(0xff777777),
+                    ),),
+                    Text( "${liveScoreCardModel!.data!.bowling!.economy}",style: fontRegular.copyWith(
+                      fontSize: 12.sp,
+                      color: const Color(0xff777777),
+                    ),),
+                  ],
+                ),
+              ),
+            ],
           ),
-        ),
+        ):Text(''),
       ],
     );
   }
