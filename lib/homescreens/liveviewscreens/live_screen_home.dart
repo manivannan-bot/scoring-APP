@@ -198,7 +198,7 @@ class _LiveScreenHomeState extends State<LiveScreenHome>with SingleTickerProvide
             child: TabBarView(
                 controller: tabController,
                 children:  [
-                  LiveDetailViewScreen(),
+                  LiveDetailViewScreen(widget.matchId),
                   ScoreCardScreens(),
                   CommentaryScreen(widget.matchId,batTeamId.toString(),bowlTeamId.toString(),fetchData),
                   InfoScreen(widget.matchId),

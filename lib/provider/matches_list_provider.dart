@@ -10,6 +10,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import '../models/ScoreCard/match_info_model.dart';
+import '../models/ScoreCard/live_scorecard_model.dart';
 import '../models/ScoreCard/score_card_model.dart';
 import '../models/ScoreCard/score_card_top_model.dart';
 import '../models/commentary/commentary_four_six_model.dart';
@@ -99,14 +100,14 @@ class MatchListProvider extends ChangeNotifier{
     return finishedMatchesModel;
   }
 
-
-  Future<ScoreCardModel> getScoreCard(String matchId) async {
+//scorecardmodel
+  Future<ScoreCardModel> getScoreCard(String matchId, String teamId) async {
 
     // SharedPreferences preferences = await SharedPreferences.getInstance();
     // String? accToken = preferences.getString("access_token");
     try {
       final response = await http.get(
-        Uri.parse('${AppConstants.scoreCardDetails}/$matchId'),
+        Uri.parse('${AppConstants.scoreCardDetails}/$matchId/$teamId'),
         // headers: {
         //   // 'Content-Type': 'application/json; charset=UTF-8',
         //   // 'Authorization': 'Bearer $accToken',
@@ -201,5 +202,40 @@ class MatchListProvider extends ChangeNotifier{
     return matchInfoModel;
   }
 
+//liveScorecard
 
+  LiveScoreCardModel liveScoreCardModel=LiveScoreCardModel();
+
+  Future<LiveScoreCardModel> getScoreCardLive(String matchId) async {
+
+    // SharedPreferences preferences = await SharedPreferences.getInstance();
+    // String? accToken = preferences.getString("access_token");
+    try {
+      final response = await http.get(
+        Uri.parse('${AppConstants.getLiveScoreCard}/$matchId'),
+        // headers: {
+        //   // 'Content-Type': 'application/json; charset=UTF-8',
+        //   // 'Authorization': 'Bearer $accToken',
+        // },
+      );
+      var decodedJson = json.decode(response.body);
+      print(decodedJson);
+      if (response.statusCode == 200) {
+        liveScoreCardModel = LiveScoreCardModel.fromJson(decodedJson);
+
+        notifyListeners();
+      } else {
+        throw const HttpException('Failed to load data');
+      }
+    } on SocketException {
+      print('No internet connection');
+    } on HttpException {
+      print('Failed to load data');
+    } on FormatException {
+      print('All Matches  - Invalid data format');
+    } catch (e) {
+      print(e);
+    }
+    return liveScoreCardModel;
+  }
 }

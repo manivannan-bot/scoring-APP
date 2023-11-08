@@ -7,7 +7,7 @@ class AppConstants {
    static const String finishedMatches = '$baseUrl/scoring/completed-matches';
    static const String scoreCardDetails = '$baseUrl/scoring/scorecard-live';
    static const String scoreCardTop = '$baseUrl/live-scorecard';
-  //  static const String getLiveScore = "$baseUrl/live-scorecard";
+    static const String getLiveScoreCard = "$baseUrl/scoring/score-live";
   //  static const String scoringDetail = '$baseUrl/scoring-details';
   //  static const String scoreUpdate = '$baseUrl/score-update';
   // static const String getBallType = '$baseUrl/ball-type';
