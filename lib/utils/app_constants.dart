@@ -15,14 +15,14 @@ class AppConstants {
   //  static const String scoreCardDetail = '$baseUrl/scorecard-details';
   //  static const String matchBreak = '$baseUrl/match-commentary';
   //  static const String dlMethod = '$baseUrl/dl-method';
-  //  static const String matchInfo = '$baseUrl/match-info';
+    static const String matchInfo = '$baseUrl/scoring/matches-info';
   // static const String matchPlayers = '$baseUrl/match-players';
   //  static const String commentaryOvers = '$baseUrl/commentary-overs';
   //  static const String playerOverview = '$baseUrl/player-overview';
   //  static const String playerStats = '$baseUrl/player-stats';
   //  static const String playerMatches = '$baseUrl/player-matches';
   //  static const String playerTeamInfo= '$baseUrl/player-team-info';
-  // static const String playerInfo= '$baseUrl/player-info';
+   //static const String playerInfo= '$baseUrl/player-info';
 //
 // //intrestmodel
 //   static const String interest = '$baseUrl/player/interest';

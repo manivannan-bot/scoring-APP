@@ -2,6 +2,8 @@ import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:scoring_app/homescreens/liveviewscreens/playing_eleven_list_screen.dart';
+import 'package:scoring_app/models/ScoreCard/match_info_model.dart';
+import 'package:scoring_app/provider/matches_list_provider.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../utils/colours.dart';
@@ -9,10 +11,9 @@ import '../../utils/images.dart';
 import '../../utils/sizes.dart';
 
 
-
 class InfoScreen extends StatefulWidget {
-
-  const InfoScreen({super.key});
+final String matchId;
+  const InfoScreen(this.matchId, {super.key});
 
   @override
   State<InfoScreen> createState() => _InfoScreenState();
@@ -22,33 +23,34 @@ class _InfoScreenState extends State<InfoScreen> {
 
   String team1Id='';
   String team2Id='';
+  MatchInfoModel? matchInfoModel;
   @override
-  // void initState() {
-  //   super.initState();
-  //   fetchData();
-  // }
-  // fetchData(){
-  //       MatchProvider().getMatchInfo(widget.matchId).then((value){
-  //         setState(() {
-  //           matchInfo=value;
-  //         });
-  //       });
-  // }
+  void initState() {
+    super.initState();
+    fetchData();
+  }
+  fetchData(){
+        MatchListProvider().getMatchInformation(widget.matchId).then((value){
+          setState(() {
+            matchInfoModel=value;
+          });
+        });
+  }
   @override
   Widget build(BuildContext context) {
-    // if (matchInfo == null) {
-    //   return const SizedBox(
-    //       height: 100,
-    //       width: 100,
-    //       child: Center(child: CircularProgressIndicator(
-    //         backgroundColor: Colors.white,
-    //       ))); // Example of a loading indicator
-    // }
+    if (matchInfoModel == null) {
+      return const SizedBox(
+          height: 100,
+          width: 100,
+          child: Center(child: CircularProgressIndicator(
+            backgroundColor: Colors.white,
+          ))); // Example of a loading indicator
+    }
     return Scaffold(
       body: Container(
         padding: EdgeInsets.symmetric(vertical: 1.h,horizontal: 6.w),
         width: double.infinity,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
             borderRadius: BorderRadius.only(topRight: Radius.circular(30),topLeft: Radius.circular(30)),
             color: AppColor.lightColor
         ),
@@ -79,14 +81,14 @@ class _InfoScreenState extends State<InfoScreen> {
                             color: Color(0xff666666),
                           ),),
                           Spacer(),
-                          Text("Aug 21, 2023 ",style: fontMedium.copyWith(
+                          Text("${matchInfoModel!.data!.matchDetails!.matchDate}",style: fontMedium.copyWith(
                             fontSize: 12.sp,
                             color: AppColor.blackColour,
                           ),),
                         ],
                       ),
                     ),
-                    DottedLine(
+                    const DottedLine(
                       dashColor: Color(0xffD2D2D2),
                     ),
                     Padding(
@@ -100,7 +102,7 @@ class _InfoScreenState extends State<InfoScreen> {
                             color: Color(0xff666666),
                           ),),
                           Spacer(),
-                          Text("6:00 AM",style: fontMedium.copyWith(
+                          Text("${matchInfoModel!.data!.matchDetails!.slotTime}",style: fontMedium.copyWith(
                             fontSize: 12.sp,
                             color: AppColor.blackColour,
                           ),),
@@ -121,14 +123,14 @@ class _InfoScreenState extends State<InfoScreen> {
                             color: Color(0xff666666),
                           ),),
                           Spacer(),
-                          Text("DCC Vs SP",style: fontMedium.copyWith(
+                          Text("${matchInfoModel!.data!.matchDetails!.team1Name} Vs ${matchInfoModel!.data!.matchDetails!.team2Name}",style: fontMedium.copyWith(
                             fontSize: 12.sp,
                             color: AppColor.blackColour,
                           ),),
                         ],
                       ),
                     ),
-                    DottedLine(
+                    const DottedLine(
                       dashColor: Color(0xffD2D2D2),
                     ),
                     Padding(
@@ -142,7 +144,7 @@ class _InfoScreenState extends State<InfoScreen> {
                             color: Color(0xff666666),
                           ),),
                           Spacer(),
-                          Text("JK Organizer \n Square out fighters",
+                          Text("${matchInfoModel!.data!.matchDetails!.organiser} \n ${matchInfoModel!.data!.matchDetails!.ground}",
                             style: fontMedium.copyWith(
                               fontSize: 12.sp,
                               color: AppColor.blackColour,
@@ -150,7 +152,7 @@ class _InfoScreenState extends State<InfoScreen> {
                         ],
                       ),
                     ),
-                    DottedLine(
+                    const DottedLine(
                       dashColor: Color(0xffD2D2D2),
                     ),
                     Padding(
@@ -164,7 +166,7 @@ class _InfoScreenState extends State<InfoScreen> {
                             color: Color(0xff666666),
                           ),),
                           Spacer(),
-                          Text("Chrompet"
+                          Text("${matchInfoModel!.data!.matchDetails!.venue}"
                             ,style: fontMedium.copyWith(
                               fontSize: 12.sp,
                               color: AppColor.blackColour,
@@ -195,7 +197,7 @@ class _InfoScreenState extends State<InfoScreen> {
                   children: [
                     ClipOval(child: Image.asset('${Images.profileImage}',width: 14.w,)),
                     SizedBox(width: 5.w,),
-                    Text('Dhoni CC',style: fontMedium.copyWith(
+                    Text('${matchInfoModel!.data!.playing11!.team1Name}',style: fontMedium.copyWith(
                       fontSize: 14.sp,
                       color: AppColor.blackColour,
                     ),),
@@ -219,7 +221,7 @@ class _InfoScreenState extends State<InfoScreen> {
                   children: [
                     ClipOval(child: Image.asset('${Images.profileImage}',width: 14.w,)),
                     SizedBox(width: 5.w,),
-                    Text('Spartans',style: fontMedium.copyWith(
+                    Text('${matchInfoModel!.data!.playing11!.team2Name}',style: fontMedium.copyWith(
                       fontSize: 14.sp,
                       color: AppColor.blackColour,
                     ),),
@@ -265,7 +267,7 @@ class _InfoScreenState extends State<InfoScreen> {
                       children: [
                         ClipOval(child: Image.asset('${Images.profileImage}',width: 16.w,)),
                         SizedBox(height: 0.5.h,),
-                        Text('Dhoni CC',style: fontMedium.copyWith(
+                        Text('${matchInfoModel!.data!.headToHead!.team1Name}',style: fontMedium.copyWith(
                           fontSize: 14.sp,
                           color: AppColor.blackColour,
                         ),),
@@ -276,7 +278,7 @@ class _InfoScreenState extends State<InfoScreen> {
                         RichText(
                             text: TextSpan(children: [
                               TextSpan(
-                                  text: '0',
+                                  text: '${matchInfoModel!.data!.headToHead!.team1Won}',
                                   style: fontMedium.copyWith(
                                     fontSize: 20.sp,
                                     color: AppColor.blackColour,
@@ -288,7 +290,7 @@ class _InfoScreenState extends State<InfoScreen> {
                                     color: AppColor.blackColour,
                                   )),
                               TextSpan(
-                                  text: '2',
+                                  text: '${matchInfoModel!.data!.headToHead!.team2Won}',
                                   style: fontMedium.copyWith(
                                     fontSize: 20.sp,
                                     color: AppColor.blackColour,
@@ -302,7 +304,7 @@ class _InfoScreenState extends State<InfoScreen> {
                       children: [
                         ClipOval(child: Image.asset('${Images.profileImage}',width: 16.w,)),
                         SizedBox(height: 0.5.h,),
-                        Text('Spartans',style: fontMedium.copyWith(
+                        Text('${matchInfoModel!.data!.headToHead!.team2Name}',style: fontMedium.copyWith(
                           fontSize: 14.sp,
                           color: AppColor.blackColour,
                         ),),
@@ -344,7 +346,7 @@ class _InfoScreenState extends State<InfoScreen> {
                             children: [
                               ClipOval(child: Image.asset('${Images.umpireImage}',width: 16.w,)),
                               SizedBox(height: 0.5.h,),
-                              Text("Dinesh",style: fontMedium.copyWith(
+                              Text("${matchInfoModel!.data!.proffesionals!.first.umpireName}",style: fontMedium.copyWith(
                                 fontSize: 12.sp,
                                 color: AppColor.blackColour,
                               ),),
@@ -355,70 +357,72 @@ class _InfoScreenState extends State<InfoScreen> {
                       ],
                     ),
                   ),
-                  Expanded(
-                    child: Column(
-                      children: [
-                        Text("Umpire 2",style: fontRegular.copyWith(
-                          fontSize: 12.sp,
-                          color: AppColor.blackColour,
-                        ),),
-                        SizedBox(height: 1.h,),
-                        Container(
-                          width: 42.w,
-                          height: 16.h,
-                          padding: EdgeInsets.symmetric(horizontal: 4.w,vertical: 1.5.h),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(15),
-                            color: Color(0xffF8F9FA),
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              ClipOval(child: Image.asset('${Images.umpireImage}',width: 16.w,)),
-                              SizedBox(height: 0.5.h,),
-                              Text("Vinayagam",style: fontMedium.copyWith(
-                                fontSize: 12.sp,
-                                color: AppColor.blackColour,
-                              ),),
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
+                  Column(
+                    children: [
+                      Text("Scorer",style: fontRegular.copyWith(
+                        fontSize: 12.sp,
+                        color: AppColor.blackColour,
+                      ),),
+                      SizedBox(height: 1.h,),
+                      Container(
+                        width: 42.w,
+                        height: 16.h,
+                        padding: EdgeInsets.symmetric(horizontal: 4.w,vertical: 1.5.h),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15),
+                          color: Color(0xffF8F9FA),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            ClipOval(child: Image.asset(Images.umpireImage,width: 16.w,)),
+                            SizedBox(height: 0.5.h,),
+                            Text("${matchInfoModel!.data!.proffesionals!.first.scorerName}",style: fontMedium.copyWith(
+                              fontSize: 12.sp,
+                              color: AppColor.blackColour,
+                            ),),
+                          ],
+                        ),
+
+                      )
+                    ],
                   ),
+
+                  // Expanded(
+                  //   child: Column(
+                  //     children: [
+                  //       Text("Umpire 2",style: fontRegular.copyWith(
+                  //         fontSize: 12.sp,
+                  //         color: AppColor.blackColour,
+                  //       ),),
+                  //       SizedBox(height: 1.h,),
+                  //       Container(
+                  //         width: 42.w,
+                  //         height: 16.h,
+                  //         padding: EdgeInsets.symmetric(horizontal: 4.w,vertical: 1.5.h),
+                  //         decoration: BoxDecoration(
+                  //           borderRadius: BorderRadius.circular(15),
+                  //           color: Color(0xffF8F9FA),
+                  //         ),
+                  //         child: Column(
+                  //           crossAxisAlignment: CrossAxisAlignment.center,
+                  //           children: [
+                  //             ClipOval(child: Image.asset('${Images.umpireImage}',width: 16.w,)),
+                  //             SizedBox(height: 0.5.h,),
+                  //             Text("Vinayagam",style: fontMedium.copyWith(
+                  //               fontSize: 12.sp,
+                  //               color: AppColor.blackColour,
+                  //             ),),
+                  //           ],
+                  //         ),
+                  //       )
+                  //     ],
+                  //   ),
+                  // ),
                 ],
               ),
               SizedBox(height: 2.h,),
-              Column(
-                children: [
-                  Text("Scorer",style: fontRegular.copyWith(
-                    fontSize: 12.sp,
-                    color: AppColor.blackColour,
-                  ),),
-                  SizedBox(height: 1.h,),
-                  Container(
-                    width: 42.w,
-                    height: 16.h,
-                    padding: EdgeInsets.symmetric(horizontal: 4.w,vertical: 1.5.h),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15),
-                      color: Color(0xffF8F9FA),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        ClipOval(child: Image.asset(Images.umpireImage,width: 16.w,)),
-                        SizedBox(height: 0.5.h,),
-                        Text("Sridhar",style: fontMedium.copyWith(
-                          fontSize: 12.sp,
-                          color: AppColor.blackColour,
-                        ),),
-                      ],
-                    ),
 
-                  )
-                ],
-              ),
 
             ],
           ),

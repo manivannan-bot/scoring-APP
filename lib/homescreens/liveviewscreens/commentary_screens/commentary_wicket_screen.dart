@@ -9,7 +9,7 @@ import '../../../utils/images.dart';
 import '../../../utils/sizes.dart';
 
 class CommentaryWicketScreen extends StatefulWidget {
-  const CommentaryWicketScreen({super.key});
+  const CommentaryWicketScreen(String matchId, String bowlTeamId, {super.key});
 
   @override
   State<CommentaryWicketScreen> createState() => _CommentaryWicketScreenState();
