@@ -191,7 +191,7 @@ class _LiveScreenHomeState extends State<LiveScreenHome>with SingleTickerProvide
                   LiveDetailViewScreen(),
                   ScoreCardScreens(),
                   CommentaryScreen(),
-                  InfoScreen(),
+                  InfoScreen(widget.matchId),
                 ]),
           )
         ],
