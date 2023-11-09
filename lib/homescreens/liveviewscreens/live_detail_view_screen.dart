@@ -6,7 +6,7 @@ import 'package:scoring_app/provider/matches_list_provider.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../models/ScoreCard/live_scorecard_model.dart';
-import '../../models/ScoreCard/score_card_model.dart';
+import '../../models/ScoreCard/score_card_response_model.dart';
 import '../../utils/colours.dart';
 import '../../utils/images.dart';
 import '../../utils/sizes.dart';
@@ -24,7 +24,6 @@ class _LiveDetailViewScreenState extends State<LiveDetailViewScreen> {
   LiveScoreCardModel? liveScoreCardModel;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     MatchListProvider().getScoreCardLive(widget.matchId).then((value) {
       setState(() {
@@ -39,10 +38,10 @@ class _LiveDetailViewScreenState extends State<LiveDetailViewScreen> {
   @override
   Widget build(BuildContext context) {
     if(liveScoreCardModel==null){
-      return Center(child: CircularProgressIndicator(),);
+      return const Center(child: CircularProgressIndicator(),);
     }
     if(liveScoreCardModel!.data==null){
-      return Center(child: Text('No score found'));
+      return const Center(child: Text('No score found'));
     }
     return Column(
       children: [

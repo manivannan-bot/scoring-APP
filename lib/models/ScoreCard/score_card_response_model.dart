@@ -1,11 +1,11 @@
-class ScoreCardModel {
+class ScoreCardResponseModel {
   bool? status;
   dynamic message;
   Data? data;
 
-  ScoreCardModel({this.status, this.message, this.data});
+  ScoreCardResponseModel({this.status, this.message, this.data});
 
-  ScoreCardModel.fromJson(Map<String, dynamic> json) {
+  ScoreCardResponseModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
     data = json['data'] != null ? new Data.fromJson(json['data']) : null;

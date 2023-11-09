@@ -1,39 +1,51 @@
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-
 import 'package:sizer/sizer.dart';
 
+import '../../models/ScoreCard/yet_to_bat.dart';
+import '../../provider/scoring_provider.dart';
 import '../../utils/colours.dart';
 import '../../utils/images.dart';
 import '../../utils/sizes.dart';
 
 
+
+
 class ScoreCardTwo extends StatefulWidget {
-  const ScoreCardTwo({super.key});
+  final String matchId;
+  final String bowlTeamId;
+  const ScoreCardTwo(this.matchId,this.bowlTeamId,{super.key});
+
   @override
   State<ScoreCardTwo> createState() => _ScoreCardTwoState();
 }
 
 class _ScoreCardTwoState extends State<ScoreCardTwo> {
-  List<Map<String,dynamic>> itemList=[
-    {},{},{},{},{},{},{},
-  ];
+
+  ScoreCardYetTobat? playersList;
 
   @override
+  void initState() {
+    super.initState();
+    fetchData();
+  }
+  fetchData(){
+    ScoringProvider().playersYetToBat(widget.matchId, widget.bowlTeamId).then((value){
+      setState(() {
+        playersList=value;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    // if(playersList==null){
-    //   return const SizedBox(
-    //       height: 100,
-    //       width: 100,
-    //       child: Center(child: CircularProgressIndicator(
-    //         backgroundColor: Colors.white,
-    //       )));
-    // }
-    return Padding(
-      padding:  EdgeInsets.symmetric(horizontal: 4.w),
+    return playersList == null
+        ? const Center(child: CircularProgressIndicator(
+      backgroundColor: Colors.white,
+    ))
+        : Padding(
+      padding: EdgeInsets.symmetric(horizontal: 4.w),
       child: ListView(
         children: [
           Column(
@@ -55,6 +67,7 @@ class _ScoreCardTwoState extends State<ScoreCardTwo> {
                 color: AppColor.blackColour,
               ),),
               SizedBox(height: 1.h,),
+              (playersList!.data!.isNotEmpty)?
               ListView.separated(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
@@ -66,9 +79,9 @@ class _ScoreCardTwoState extends State<ScoreCardTwo> {
                       ),
                     );
                   },
-                  itemCount: itemList.length,
-                  itemBuilder: (BuildContext, int index) {
-                    final item = itemList[index];
+                  itemCount: playersList!.data!.length,
+                  itemBuilder: (context, int index) {
+                    final item = playersList!.data![index];
                     return Padding(
                       padding:  EdgeInsets.symmetric(vertical: 1.h),
                       child: Row(
@@ -80,39 +93,39 @@ class _ScoreCardTwoState extends State<ScoreCardTwo> {
                             children: [
                               SizedBox(
                                 width: 70.w,
-                                child: Text("Hari",style: fontMedium.copyWith(
+                                child: Text("${item.playerName}",style: fontMedium.copyWith(
                                   fontSize: 12.sp,
                                   color: AppColor.blackColour,
                                 ),),
                               ),
                               SizedBox(height: 0.5.h,),
-                              Row(
+                              (item.battingStyle!=null)?Row(
                                 children: [
-                                  CircleAvatar(
+                                  const CircleAvatar(
                                     backgroundColor: AppColor.pri,
                                     radius: 4,
                                   ),
                                   SizedBox(width: 1.w,),
-                                  Text("Left hand batsman",style: fontRegular.copyWith(
-                                      fontSize: 11.sp,
-                                      color: Color(0xff555555),
-                                  ),)
+                                  Text("${item.battingStyle}",style: fontRegular.copyWith(
+                                    fontSize: 11.sp,
+                                    color: const Color(0xff555555),
+                                  ),),
                                 ],
-                              )
+                              ):const Text(''),
                             ],
                           ),
 
                         ],
                       ),
                     );
-                  }),
-                const Divider(
+                  }):const Text('No players found'),
+              const Divider(
                 color: Color(0xffD3D3D3),
               ),
             ],
           ),
         ],
-        ),
+      ),
     );
   }
 }

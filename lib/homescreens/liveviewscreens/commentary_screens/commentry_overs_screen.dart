@@ -1,32 +1,52 @@
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:scoring_app/provider/scoring_provider.dart';
 
 import 'package:sizer/sizer.dart';
-import '../../../utils/colours.dart';
+
+import '../../../models/commentary/commentary_overs_model.dart';
 import '../../../utils/sizes.dart';
+
 
 class CommentryOvers extends StatefulWidget {
   final String matchId;
-  final String bowlTeamId;
-  const CommentryOvers(this.matchId, this.bowlTeamId, {super.key});
+  final String teamId;
+  const CommentryOvers(this.matchId,this.teamId, {super.key});
+
   @override
   State<CommentryOvers> createState() => _CommentryOversState();
 }
+
 class _CommentryOversState extends State<CommentryOvers> {
-  final List<Map<String,dynamic>>itemList=[
-    {},{},{},{},{},{},{},{},{},{},{},{},
-  ];
+  CommentaryOversModel? commentaryOversModel;
+
+
   @override
   void initState() {
     super.initState();
     fetchData();
   }
   fetchData(){
-
+    ScoringProvider().getCommentaryOvers(widget.matchId, widget.teamId).then((value) {
+      setState(() {
+        commentaryOversModel=value;
+      });
+    });
   }
   @override
   Widget build(BuildContext context) {
+    if(commentaryOversModel==null){
+      return const SizedBox(
+          height: 100,
+          width: 100,
+          child: Center(child: CircularProgressIndicator(
+            backgroundColor: Colors.white,
+          )));
+    }
+    if(commentaryOversModel!.data!.isEmpty){
+      return const Center(child: Text('No data found'));
+    }
     return Padding(
       padding:  EdgeInsets.symmetric(horizontal: 2.w,vertical: 1.h),
       child: ListView.separated(
@@ -36,13 +56,15 @@ class _CommentryOversState extends State<CommentryOvers> {
             padding: EdgeInsets.only(right: 2.w,bottom: 1.h),
           );
         },
-        itemCount: 10,
+        itemCount: commentaryOversModel!.data!.length,
         itemBuilder: (BuildContext context, int index) {
+          final option=commentaryOversModel!.data![index];
+          var overNo=(option.overNumber??0)+1;
           return  Column(
             children: [
               Row(
                 children: [
-                  Text('Over 9',style: fontMedium.copyWith(
+                  Text('Over ${overNo}',style: fontMedium.copyWith(
                     fontSize: 13.sp,
                     color: Color(0xff666666),
                   ),),
@@ -58,23 +80,13 @@ class _CommentryOversState extends State<CommentryOvers> {
                               padding: EdgeInsets.only(right: 2.w,bottom: 0.h),
                             );
                           },
-                          itemCount:itemList.length ,
+                          itemCount:option.noOfBalls!.length ,
                           itemBuilder: (context, int index) {
-                            final item = itemList[index];
-                            return Container(
-                              padding: EdgeInsets.symmetric(horizontal: 2.5.w,vertical: 0.5.h),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(30),
-                                border: Border.all(color: Color(0xffDADADA)),
-                                color: Color(0xffFBFAF7),
-                              ),
-                              child: Center(
-                                child: Text('2nb',style: fontMedium.copyWith(
-                                  fontSize: 11.sp,
-                                  color: AppColor.blackColour,
-                                ),),
-                              ),
-                            );
+                            final item = option.noOfBalls![index];
+                            if(item.wicket==1){
+                              return ScoreContainer( runsScored: 'w');
+                            }
+                            return ScoreContainer( runsScored: item.slugData??'0');
                           }),
                     ),
                   ),
@@ -88,7 +100,7 @@ class _CommentryOversState extends State<CommentryOvers> {
                           fontSize: 24,
                         ),
                       ),
-                      Text('15' ?? 'N/A',
+                      Text('${option.overRun}' ?? 'N/A',
                         style: fontRegular.copyWith(
                           color: Colors.black,
                           fontSize: 24,
@@ -96,22 +108,63 @@ class _CommentryOversState extends State<CommentryOvers> {
                       ),
                     ],
                   ),
+
                 ],
               ),
               SizedBox(height: 1.h,),
-              DottedLine(
+              const DottedLine(
                 dashColor: Color(0xffD2D2D2),
               ),
             ],
           );
         },
+
       ),
     );
   }
 }
 
 
+class ScoreContainer extends StatelessWidget {
+  final String runsScored;
 
+  ScoreContainer({required this.runsScored});
 
+  @override
+  Widget build(BuildContext context) {
+    Color bgColor;
+    Color textColor;
 
+    if (runsScored == '6') {
+      bgColor = const Color(0xff1A134C);
+      textColor=Colors.white;
+    } else if (runsScored == '4') {
+      bgColor = const Color(0xff6654EB);
+      textColor=Colors.white;
+    } else if (runsScored == 'w') {
+      bgColor = const Color(0xffFF0000);
+      textColor=Colors.white;
+    } else {
+      bgColor = const Color(0xffDADADA);
+      textColor=Colors.black;
+    }
 
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 2.5.w, vertical: 0.5.h),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(30),
+        border: Border.all(color: Color(0xffDADADA)),
+        color: bgColor, // Use the determined background color
+      ),
+      child: Center(
+        child: Text(
+          runsScored,
+          style: fontMedium.copyWith(
+            fontSize: 11.sp,
+            color: textColor,
+          ),
+        ),
+      ),
+    );
+  }
+}

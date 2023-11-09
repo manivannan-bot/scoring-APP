@@ -1,28 +1,52 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dash/flutter_dash.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:scoring_app/provider/scoring_provider.dart';
 
 import 'package:sizer/sizer.dart';
 
+import '../../../models/commentary/commentary_wicket_model.dart';
 import '../../../utils/colours.dart';
 import '../../../utils/images.dart';
 import '../../../utils/sizes.dart';
 
+
 class CommentaryWicketScreen extends StatefulWidget {
-  const CommentaryWicketScreen(String matchId, String bowlTeamId, {super.key});
+  final String matchId;
+  final String teamId;
+  const CommentaryWicketScreen(this.matchId, this.teamId, {super.key});
 
   @override
   State<CommentaryWicketScreen> createState() => _CommentaryWicketScreenState();
 }
 
 class _CommentaryWicketScreenState extends State<CommentaryWicketScreen> {
-  final List<Map<String, dynamic>> itemList = [
-    {},
-    {},
-    {},
-  ];
+  CommentaryWicketModel? commentaryWicketModel;
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
+  }
+  fetchData(){
+    ScoringProvider().getCommentaryWickets(widget.matchId, widget.teamId).then((value){
+      setState(() {
+        commentaryWicketModel=value;
+      });
+    });
+  }
   @override
   Widget build(BuildContext context) {
+    if(commentaryWicketModel==null||commentaryWicketModel!.data==null){
+      return const SizedBox(
+          height: 100,
+          width: 100,
+          child: Center(child: CircularProgressIndicator(
+            backgroundColor: Colors.white,
+          )));
+    }
+    if(commentaryWicketModel!.data!.isEmpty){
+      return const Center(child: Text('No data found'));
+    }
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -40,9 +64,9 @@ class _CommentaryWicketScreenState extends State<CommentaryWicketScreen> {
                     padding: EdgeInsets.only(bottom: 2.h),
                   );
                 },
-                itemCount: itemList.length,
-                itemBuilder: (BuildContext, int index) {
-                  final item = itemList[index];
+                itemCount: commentaryWicketModel!.data!.length,
+                itemBuilder: (context, int index) {
+                  final item = commentaryWicketModel!.data![index];
                   return Padding(
                     padding: EdgeInsets.symmetric(horizontal: 5.w),
                     child: Column(
@@ -50,19 +74,19 @@ class _CommentaryWicketScreenState extends State<CommentaryWicketScreen> {
                       children: [
                         RichText(
                             text: TextSpan(children: [
-                          TextSpan(
-                              text: "Over",
-                              style: fontMedium.copyWith(
-                                fontSize: 14.sp,
-                                color: AppColor.blackColour,
-                              )),
-                          TextSpan(
-                              text: " 7",
-                              style: fontMedium.copyWith(
-                                fontSize: 14.sp,
-                                color: AppColor.blackColour,
-                              )),
-                        ])),
+                              TextSpan(
+                                  text: "Over",
+                                  style: fontMedium.copyWith(
+                                    fontSize: 14.sp,
+                                    color: AppColor.blackColour,
+                                  )),
+                              TextSpan(
+                                  text: " ${item.overNumber}",
+                                  style: fontMedium.copyWith(
+                                    fontSize: 14.sp,
+                                    color: AppColor.blackColour,
+                                  )),
+                            ])),
                         SizedBox(
                           height: 2.h,
                         ),
@@ -117,45 +141,45 @@ class _CommentaryWicketScreenState extends State<CommentaryWicketScreen> {
                                     left: 5.w,
                                     child: Row(
                                       crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                      CrossAxisAlignment.start,
                                       children: [
                                         ClipOval(
                                             child: Image.asset(
-                                          Images.profileImage,
-                                          width: 12.w,
-                                        )),
+                                              Images.profileImage,
+                                              width: 12.w,
+                                            )),
                                         SizedBox(
                                           width: 2.w,
                                         ),
                                         Column(
                                           crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                          CrossAxisAlignment.start,
                                           children: [
                                             RichText(
                                                 text: TextSpan(children: [
-                                              TextSpan(
-                                                  text: "Pandi ",
-                                                  style: fontMedium.copyWith(
-                                                    fontSize: 14.sp,
-                                                    color: AppColor.lightColor,
-                                                  )),
-                                              TextSpan(
-                                                  text: "21",
-                                                  style: fontMedium.copyWith(
-                                                      fontSize: 14.sp,
-                                                      color:
+                                                  TextSpan(
+                                                      text: "${item.batsmanName} ",
+                                                      style: fontMedium.copyWith(
+                                                        fontSize: 14.sp,
+                                                        color: AppColor.lightColor,
+                                                      )),
+                                                  TextSpan(
+                                                      text: "${item.runsScored}",
+                                                      style: fontMedium.copyWith(
+                                                          fontSize: 14.sp,
+                                                          color:
                                                           AppColor.lightColor)),
-                                              TextSpan(
-                                                  text: "(10)",
-                                                  style: fontMedium.copyWith(
-                                                      fontSize: 14.sp,
-                                                      color:
+                                                  TextSpan(
+                                                      text: "(${item.ballsFaced})",
+                                                      style: fontMedium.copyWith(
+                                                          fontSize: 14.sp,
+                                                          color:
                                                           AppColor.lightColor)),
-                                            ])),
+                                                ])),
                                             SizedBox(
                                               width: 30.w,
                                               child: Text(
-                                                "b Prasanth",
+                                                "b ${item.wicketerName}",
                                                 style: fontRegular.copyWith(
                                                   fontSize: 10.sp,
                                                   color: AppColor.lightColor,
@@ -178,7 +202,7 @@ class _CommentaryWicketScreenState extends State<CommentaryWicketScreen> {
                         Row(
                           children: [
                             Text(
-                              "6.3",
+                              "${item.over}",
                               style: fontMedium.copyWith(
                                 fontSize: 14.sp,
                                 color: AppColor.blackColour,
@@ -189,22 +213,22 @@ class _CommentaryWicketScreenState extends State<CommentaryWicketScreen> {
                             ),
                             RichText(
                                 text: TextSpan(children: [
-                              TextSpan(
-                                  text: "Prasanth",
-                                  style: fontMedium.copyWith(
-                                      fontSize: 12.sp,
-                                      color: Color(0xff666666))),
-                              TextSpan(
-                                  text: " to ",
-                                  style: fontMedium.copyWith(
-                                      fontSize: 12.sp,
-                                      color: Color(0xff666666))),
-                              TextSpan(
-                                  text: "Pandi",
-                                  style: fontMedium.copyWith(
-                                      fontSize: 12.sp,
-                                      color: Color(0xff666666))),
-                            ])),
+                                  TextSpan(
+                                      text: "${item.bowlerName}",
+                                      style: fontMedium.copyWith(
+                                          fontSize: 12.sp,
+                                          color: Color(0xff666666))),
+                                  TextSpan(
+                                      text: " to ",
+                                      style: fontMedium.copyWith(
+                                          fontSize: 12.sp,
+                                          color: Color(0xff666666))),
+                                  TextSpan(
+                                      text: "${item.batsmanName}",
+                                      style: fontMedium.copyWith(
+                                          fontSize: 12.sp,
+                                          color: Color(0xff666666))),
+                                ])),
                           ],
                         ),
                         SizedBox(
@@ -227,7 +251,7 @@ class _CommentaryWicketScreenState extends State<CommentaryWicketScreen> {
                               width: 5.w,
                             ),
                             Text(
-                              "Prasanth to Pandi, out Bowled",
+                              "${item.bowlerName} to ${item.batsmanName},${item.outType}",
                               style: fontRegular.copyWith(
                                 fontSize: 12.sp,
                                 color: AppColor.blackColour,

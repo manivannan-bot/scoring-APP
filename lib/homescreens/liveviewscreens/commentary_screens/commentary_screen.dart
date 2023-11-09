@@ -1,22 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
+import '../../../models/ScoreCard/score_card_response_model.dart';
 import '../../../utils/colours.dart';
 import '../../../utils/sizes.dart';
-import '../info_screen.dart';
 import 'commentary_all_screen.dart';
+import 'commentary_four_six.dart';
 import 'commentary_wicket_screen.dart';
 import 'commentry_overs_screen.dart';
-// import '../../../scoring_app/lib/homescreens/liveviewscreens/scorecard_two.dart';
-
 
 
 class CommentaryScreen extends StatefulWidget {
- final String matchId;
- final String batTeamId;
- final String bowlTeamId;
- final VoidCallback fetchData;
-  const CommentaryScreen(this.matchId, this.batTeamId, this.bowlTeamId, this.fetchData, {super.key});
+  final String matchId;
+  final String team1Id;
+  final String team2Id;
+  final VoidCallback fetchData;
+  const CommentaryScreen(this.matchId, this.team1Id, this.team2Id, this.fetchData,{super.key});
 
   @override
   State<CommentaryScreen> createState() => _CommentaryScreenState();
@@ -24,7 +23,7 @@ class CommentaryScreen extends StatefulWidget {
 
 class _CommentaryScreenState extends State<CommentaryScreen>with SingleTickerProviderStateMixin {
   late TabController tabController;
-
+  ScoreCardResponseModel? scoreCardResponseModel;
 
   int? currentIndex;
 
@@ -133,10 +132,13 @@ class _CommentaryScreenState extends State<CommentaryScreen>with SingleTickerPro
               child: TabBarView(
                   controller: tabController,
                   children:  [
+
                     CommentaryAllScreen(),
-                    CommentryOvers(widget.matchId,widget.bowlTeamId),
-                    CommentaryWicketScreen(widget.matchId,widget.bowlTeamId),
-                  Container(),
+                    CommentryOvers(widget.matchId,widget.team2Id),
+                    CommentaryWicketScreen(widget.matchId,widget.team2Id),
+                    CommentaryFourSix(widget.matchId,widget.team2Id),
+
+
                   ]),
             ),
           ],
