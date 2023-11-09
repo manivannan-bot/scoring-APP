@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:scoring_app/homescreens/playerdetailviewscreen/stats_batting_details.dart';
 import 'package:scoring_app/homescreens/playerdetailviewscreen/stats_bowling_details.dart';
 import 'package:sizer/sizer.dart';
 
+import '../../models/players/player_stats_model.dart';
+import '../../provider/player_details_provider.dart';
 import '../../utils/colours.dart';
 import '../../utils/sizes.dart';
 
 
 
 class PlayerStatsScreen extends StatefulWidget {
-
-  const PlayerStatsScreen( {super.key});
+  final String playerId;
+  const PlayerStatsScreen(this.playerId, {super.key});
 
   @override
   State<PlayerStatsScreen> createState() => _PlayerStatsScreenState();
@@ -17,30 +20,41 @@ class PlayerStatsScreen extends StatefulWidget {
 
 class _PlayerStatsScreenState extends State<PlayerStatsScreen>with SingleTickerProviderStateMixin {
   late TabController tabController;
+  PlayerStatsModel? playerStatsModel;
 
   void initState() {
     // TODO: implement initState
     super.initState();
     tabController = TabController(length: 2, vsync: this);
-
+    fetchData();
+  }
+  fetchData(){
+    PlayerDetailsProvider().getPlayerStats(widget.playerId).then((value) {
+      setState(() {
+        playerStatsModel=value;
+      });
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    // if(playerStatsModel==null){
-    //   return const SizedBox(
-    //     height: 100,
-    //     width: 100,
-    //     child: Center(child: CircularProgressIndicator()),
-    //   );
-    // }
+    if(playerStatsModel==null){
+      return const SizedBox(
+        height: 100,
+        width: 100,
+        child: Center(child: CircularProgressIndicator()),
+      );
+    }
+    if(playerStatsModel!.data==null){
+      return const Center(child: Text('No data found'),);
+    }
     return SingleChildScrollView(
       child: Column(
         children: [
           Container(
             height: 68.h,
             padding: EdgeInsets.symmetric(vertical: 1.h,horizontal: 4.w),
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
                 borderRadius: BorderRadius.only(topRight: Radius.circular(30),topLeft: Radius.circular(30)),
                 color: AppColor.lightColor
             ),
@@ -83,8 +97,8 @@ class _PlayerStatsScreenState extends State<PlayerStatsScreen>with SingleTickerP
                   child: TabBarView(
                       controller: tabController,
                       children:  [
-                        StatsBowling(),
-                        StatsBowling(),
+                        StatsBatting(playerStatsModel!.data!.battingPerformance),
+                        StatsBowling(playerStatsModel!.data!.bowlingPerformance),
                       ]),
                 ),
               ],

@@ -3,82 +3,99 @@ import 'package:flutter/material.dart';
 import 'package:scoring_app/homescreens/playerdetailviewscreen/teamsoverviewscreens/team_detail_view_screens.dart';
 import 'package:sizer/sizer.dart';
 
+import '../../models/players/player_team_info_model.dart';
+import '../../provider/player_details_provider.dart';
 import '../../utils/colours.dart';
 import '../../utils/images.dart';
 import '../../utils/sizes.dart';
 
 
-class PlayersTeamList extends StatefulWidget {
-  const PlayersTeamList({super.key});
+
+class TeamListScreen extends StatefulWidget {
+  final String playerId;
+  const TeamListScreen(this.playerId, {super.key});
 
   @override
-  State<PlayersTeamList> createState() => _PlayersTeamListState();
+  State<TeamListScreen> createState() => _TeamListScreenState();
 }
 
-class _PlayersTeamListState extends State<PlayersTeamList> {
-  final List<Map<String, dynamic >> itemList = [
-    {
-      'type': 'live',
+class _TeamListScreenState extends State<TeamListScreen> {
 
+  PlayerTeamInfoModel? playerTeamInfoModel;
 
-    },
-    {
-      'type': 'upcoming',
-
-    },
-    {
-      'type': 'completed',
-
-    },
-  ];
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
+  }
+  fetchData(){
+    PlayerDetailsProvider().getPlayerTeamInfo(widget.playerId).then((value) {
+      setState(() {
+        playerTeamInfoModel=value;
+      });
+    });
+  }
   @override
   Widget build(BuildContext context) {
+    if(playerTeamInfoModel==null){
+      return const SizedBox(
+        height: 50,
+        width: 50,
+        child: Center(
+          child: CircularProgressIndicator(
+            backgroundColor: Colors.white,
+          ),
+        ),
+      );
+    }
+    if(playerTeamInfoModel!.data!.isEmpty){
+      return const Center(child: Text('No data found'),);
+    }
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
           children: [
-            GestureDetector(
-              onTap: (){
-                 Navigator.push(context, MaterialPageRoute(builder: (context) => TeamDetailViewScreens()));
-              },
-              child: Container(
-                padding: EdgeInsets.symmetric(vertical: 1.h,horizontal: 4.w),
-                width: double.infinity,
-                decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.only(topRight: Radius.circular(30),topLeft: Radius.circular(30)),
-                    color: AppColor.lightColor
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("Teams",style: fontMedium.copyWith(
-                      fontSize: 14.sp,
-                      color: AppColor.blackColour,
-                    ),),
-                    SizedBox(height: 2.h,),
-                    MediaQuery.removePadding(
-                      context: context,
-                      removeTop: true,  // Set this to true to remove top padding
-                      removeBottom: true,
-                      child: ListView.separated(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          separatorBuilder: (context, _) {
-                            return Padding(
-                                padding: EdgeInsets.only(bottom: 1.h)
-                            );
-                          },
-                          itemCount: itemList.length,
-                          itemBuilder: (context, int index) {
+            Container(
+              padding: EdgeInsets.symmetric(vertical: 1.h,horizontal: 4.w),
+              width: double.infinity,
+              decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.only(topRight: Radius.circular(30),topLeft: Radius.circular(30)),
+                  color: AppColor.lightColor
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text("Teams",style: fontMedium.copyWith(
+                    fontSize: 14.sp,
+                    color: AppColor.blackColour,
+                  ),),
+                  SizedBox(height: 2.h,),
+                  MediaQuery.removePadding(
+                    context: context,
+                    removeTop: true,  // Set this to true to remove top padding
+                    removeBottom: true,
+                    child: ListView.separated(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        separatorBuilder: (context, _) {
+                          return Padding(
+                              padding: EdgeInsets.only(bottom: 1.h)
+                          );
+                        },
+                        itemCount: playerTeamInfoModel!.data!.length,
+                        itemBuilder: (context, int index) {
 
-                            return   Column(
+                          return   GestureDetector(onTap:(){
+                            //Navigator.push(context, MaterialPageRoute(builder: (context) => TeamDetailViewScreens(playerTeamInfoModel!.data![index].teamId.toString())));
+                          },
+                            child: Column(
                               children: [
                                 Container(
                                   padding: EdgeInsets.symmetric(horizontal: 2.w,vertical: 2.5.h),
                                   width: double.infinity,
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(10),
-                                    color: Color(0xffF8F9FA),
+                                    color: const Color(0xffF8F9FA),
                                   ),
                                   child: Row(
                                     children: [
@@ -93,7 +110,7 @@ class _PlayersTeamListState extends State<PlayersTeamList> {
                                         child: Column(
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
-                                            Text("Toss & Tails", style: fontMedium.copyWith(
+                                            Text("${playerTeamInfoModel!.data![index].teamName}", style: fontMedium.copyWith(
                                               fontSize: 14.sp,
                                               color: AppColor.blackColour,
                                             )),
@@ -113,7 +130,7 @@ class _PlayersTeamListState extends State<PlayersTeamList> {
                                                             color: AppColor.textGrey,
                                                           )),
                                                       TextSpan(
-                                                          text: "3",
+                                                          text: "${playerTeamInfoModel!.data![index].played}",
                                                           style: fontRegular.copyWith(
                                                             fontSize: 12.sp,
                                                             color: AppColor.blackColour,
@@ -129,7 +146,7 @@ class _PlayersTeamListState extends State<PlayersTeamList> {
                                                             color: AppColor.textGrey,
                                                           )),
                                                       TextSpan(
-                                                          text: "2",
+                                                          text: "${playerTeamInfoModel!.data![index].matchWonBy}",
                                                           style: fontRegular.copyWith(
                                                             fontSize: 12.sp,
                                                             color: AppColor.blackColour,
@@ -145,7 +162,7 @@ class _PlayersTeamListState extends State<PlayersTeamList> {
                                                             color: AppColor.textGrey,
                                                           )),
                                                       TextSpan(
-                                                          text: "1",
+                                                          text: "${playerTeamInfoModel!.data![index].matchLossBy}",
                                                           style: fontRegular.copyWith(
                                                             fontSize: 12.sp,
                                                             color: AppColor.blackColour,
@@ -161,13 +178,14 @@ class _PlayersTeamListState extends State<PlayersTeamList> {
                                   ),
                                 ),
                               ],
-                            );
-                          }),
-                    ),
-                  ],
-                ),
+                            ),
+                          );
+                        }),
+                  ),
+                ],
               ),
             ),
+
           ],
         ),
       ),

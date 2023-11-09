@@ -26,6 +26,7 @@ class _LiveScreenHomeState extends State<LiveScreenHome>with SingleTickerProvide
   ScoreCardTopModel? scoreCardTopModel;
   int batTeamId=0;
   int bowlTeamId=0;
+  int currentInning=1;
   @override
   void initState() {
     // TODO: implement initState
@@ -37,6 +38,7 @@ class _LiveScreenHomeState extends State<LiveScreenHome>with SingleTickerProvide
     MatchListProvider().getScoreCardTop(widget.matchId, widget.teamId).then((value) {
       setState(() {
         scoreCardTopModel=value;
+        currentInning=value.matches!.currentInnings;
         if(value.matches!.team1Id==value.matches!.tossWonBy && value.matches!.choseTo=="Bat"){
           batTeamId=value.matches!.team1Id;
           bowlTeamId=value.matches!.team2Id;
@@ -199,7 +201,7 @@ class _LiveScreenHomeState extends State<LiveScreenHome>with SingleTickerProvide
                 controller: tabController,
                 children:  [
                   LiveDetailViewScreen(widget.matchId),
-                  ScorecardScreen(widget.matchId,batTeamId.toString(),fetchData),
+                  ScorecardScreen(widget.matchId,batTeamId.toString(),bowlTeamId.toString(),currentInning.toString(),fetchData),
                   CommentaryScreen(widget.matchId,batTeamId.toString(),bowlTeamId.toString(),fetchData),
                   InfoScreen(widget.matchId),
                 ]),

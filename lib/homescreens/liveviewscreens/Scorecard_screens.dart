@@ -11,14 +11,13 @@ import '../../provider/scoring_provider.dart';
 import '../../utils/colours.dart';
 import '../../utils/sizes.dart';
 
-
-
-
 class ScorecardScreen extends StatefulWidget {
   final String matchId;
   final String team1Id;
+  final String team2Id;
+  final String currentInning;
   final VoidCallback fetchData;
-  const ScorecardScreen(this.matchId,this.team1Id,this.fetchData,{super.key});
+  const ScorecardScreen(this.matchId,this.team1Id,this.team2Id,this.currentInning,this.fetchData,{super.key});
 
   @override
   State<ScorecardScreen> createState() => _ScorecardScreenState();
@@ -26,11 +25,16 @@ class ScorecardScreen extends StatefulWidget {
 
 class _ScorecardScreenState extends State<ScorecardScreen>with SingleTickerProviderStateMixin{
   late TabController tabController;
-  ScoreCardResponseModel?  scoreCardResponseModel;
+  ScoreCardResponseModel? scoreCardResponseModel;
+  ScoreCardResponseModel? scoreCardResponseModel1;
   Matches? matchlist;
   List<TeamsName>?teams;
   int? batTeamId;
   int? bowlTeamId;
+  int currentInning=1;
+  var CRR;
+  var RRR;
+  var TARGET;
 
   @override
   void initState() {
@@ -54,7 +58,7 @@ class _ScorecardScreenState extends State<ScorecardScreen>with SingleTickerProvi
               bowlTeamId=data.matches!.team1Id;
             }
           }else if(matchlist!.currentInnings==2){
-            if(matchlist!.tossWonBy==int.parse(widget.team1Id) && matchlist!.choseTo=='Bat' ) {
+            if(matchlist!.tossWonBy==int.parse(widget.team2Id) && matchlist!.choseTo=='Bat' ) {
               batTeamId=data.matches!.team2Id;
               bowlTeamId=data.matches!.team1Id;
             }else{
@@ -70,6 +74,15 @@ class _ScorecardScreenState extends State<ScorecardScreen>with SingleTickerProvi
       setState(() {
         scoreCardResponseModel=value;
       });
+
+      if(widget.currentInning=='2'){
+        ScoringProvider().getScoreCard(widget.matchId, widget.team2Id).then((value) {
+          setState(() {
+            scoreCardResponseModel1=value;
+          });
+        });
+      }
+
     });
   }
 
@@ -88,6 +101,19 @@ class _ScorecardScreenState extends State<ScorecardScreen>with SingleTickerProvi
     }
     if(scoreCardResponseModel!=null){
       teams= scoreCardResponseModel!.data!.teamsName;
+      if(scoreCardResponseModel!.data!.currRunRate!=null){
+        CRR=scoreCardResponseModel!.data!.currRunRate!.runRate;
+        RRR=scoreCardResponseModel!.data!.currRunRate!.reqRunRate;
+        TARGET=scoreCardResponseModel!.data!.currRunRate!.targetScore;
+        if(tabController.index==1){
+          setState(() {
+            CRR=scoreCardResponseModel1!.data!.currRunRate!.runRate;
+            RRR=scoreCardResponseModel1!.data!.currRunRate!.reqRunRate;
+          });
+
+        }
+
+      }
     }
 
     return Container(
@@ -103,25 +129,25 @@ class _ScorecardScreenState extends State<ScorecardScreen>with SingleTickerProvi
               borderRadius: BorderRadius.only(topRight: Radius.circular(20),topLeft: Radius.circular(20)),
               color: AppColor.blackColour,
             ),
-            child: Row(
+            child: (scoreCardResponseModel!.data!.currRunRate!=null)?Row(
                 children:[
-                  Text("CRR: ${scoreCardResponseModel!.data!.currRunRate!.runRate??'-'}",style: fontMedium.copyWith(
+                  Text("CRR: ${CRR??'-'}",style: fontMedium.copyWith(
                     fontSize: 10.sp,
                     color: AppColor.lightColor,
                   ),),
                   (teams!.first.currentInnings==2)?Row(children: [
                     SizedBox(width: 2.w,),
-                    Text("RRR: ${scoreCardResponseModel!.data!.currRunRate!.reqRunRate??'-'}",style: fontMedium.copyWith(
+                    Text("RRR: ${RRR??'-'}",style: fontMedium.copyWith(
                       fontSize: 10.sp,
                       color: AppColor.lightColor,
                     ),),
                     SizedBox(width: 40.w,),
-                    Text("Target: ${scoreCardResponseModel!.data!.currRunRate!.targetScore??'-'}",style: fontMedium.copyWith(
+                    Text("Target: ${TARGET??'-'}",style: fontMedium.copyWith(
                       fontSize: 10.sp,
                       color: AppColor.lightColor,
                     ),),],):const Text('')
                 ]
-            ),
+            ):Text(''),
           ),
           SizedBox(height: 1.h,),
           TabBar(
@@ -141,7 +167,7 @@ class _ScorecardScreenState extends State<ScorecardScreen>with SingleTickerProvi
                 ),
                 Padding(
                   padding:  EdgeInsets.symmetric(horizontal: 4.w),
-                  child: Text('${teams!.first.team2Name} ${teams!.first.currentInnings==1?'Yet to bat':teams!.first.team2Name}',style: fontMedium.copyWith(fontSize: 13.sp,color: AppColor.blackColour),),
+                  child: Text('${teams!.first.team2Name} ${teams!.first.currentInnings==1?'Yet to bat':''}',style: fontMedium.copyWith(fontSize: 13.sp,color: AppColor.blackColour),),
                 ),
               ]
           ),
@@ -153,8 +179,14 @@ class _ScorecardScreenState extends State<ScorecardScreen>with SingleTickerProvi
                   ScoreCardOne(scoreCardResponseModel!.data!),
                   if(teams!.first.currentInnings==1)...[
                     ScoreCardTwo(widget.matchId,bowlTeamId.toString()),]
-                  else...[
-                    ScoreCardOne(scoreCardResponseModel!.data!),
+                  else if(scoreCardResponseModel1!=null)...[
+                    if(scoreCardResponseModel1!.data!=null)...[
+                      ScoreCardOne(scoreCardResponseModel1!.data!),
+                    ]else...[
+                      ScoreCardTwo(widget.matchId,bowlTeamId.toString()),
+                    ]
+                  ]else...[
+                    ScoreCardTwo(widget.matchId,bowlTeamId.toString()),
                   ]
 
                 ]),
@@ -164,5 +196,4 @@ class _ScorecardScreenState extends State<ScorecardScreen>with SingleTickerProvi
     );
   }
 }
-
 

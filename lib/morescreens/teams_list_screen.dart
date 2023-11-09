@@ -1,137 +1,192 @@
+import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:sizer/sizer.dart';
 
+import '../models/players/player_team_info_model.dart';
+import '../provider/player_details_provider.dart';
 import '../utils/colours.dart';
 import '../utils/images.dart';
 import '../utils/sizes.dart';
 
-
 class TeamListScreen extends StatefulWidget {
-  const TeamListScreen({super.key});
+  final String playerId;
+  const TeamListScreen(this.playerId, {super.key});
 
   @override
   State<TeamListScreen> createState() => _TeamListScreenState();
 }
 
 class _TeamListScreenState extends State<TeamListScreen> {
-  final List<Map<String,dynamic>>itemList=[
-    {},{},{},
-  ];
+
+  PlayerTeamInfoModel? playerTeamInfoModel;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
+  }
+  fetchData(){
+    PlayerDetailsProvider().getPlayerTeamInfo(widget.playerId).then((value) {
+      setState(() {
+        playerTeamInfoModel=value;
+      });
+    });
+  }
   @override
   Widget build(BuildContext context) {
+    if(playerTeamInfoModel==null){
+      return const SizedBox(
+        height: 50,
+        width: 50,
+        child: Center(
+          child: CircularProgressIndicator(
+            backgroundColor: Colors.white,
+          ),
+        ),
+      );
+    }
+    if(playerTeamInfoModel!.data!.isEmpty){
+      return const Center(child: Text('No data found'),);
+    }
     return Scaffold(
-      backgroundColor: AppColor.bgColor,
-      body: SafeArea(
+      body: SingleChildScrollView(
         child: Column(
           children: [
-            Padding(
-              padding: EdgeInsets.symmetric(
-                  horizontal: 5.w
-              ) + EdgeInsets.only(
-                  top: 2.h
+            Container(
+              padding: EdgeInsets.symmetric(vertical: 1.h,horizontal: 4.w),
+              width: double.infinity,
+              decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.only(topRight: Radius.circular(30),topLeft: Radius.circular(30)),
+                  color: AppColor.lightColor
               ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  GestureDetector(
-                      onTap:(){
-                        Navigator.pop(context);
-                      },
-                      child: Icon(Icons.arrow_back, color: AppColor.textColor, size: 7.w,)),
-                  Text("Following Teams",
-                    style: fontMedium.copyWith(
-                        fontSize: 15.sp,
-                        color: AppColor.textColor
-                    ),),
-                  SizedBox(width: 7.w,),
+                  Text("Teams",style: fontMedium.copyWith(
+                    fontSize: 14.sp,
+                    color: AppColor.blackColour,
+                  ),),
+                  SizedBox(height: 2.h,),
+                  MediaQuery.removePadding(
+                    context: context,
+                    removeTop: true,  // Set this to true to remove top padding
+                    removeBottom: true,
+                    child: ListView.separated(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        separatorBuilder: (context, _) {
+                          return Padding(
+                              padding: EdgeInsets.only(bottom: 1.h)
+                          );
+                        },
+                        itemCount: playerTeamInfoModel!.data!.length,
+                        itemBuilder: (context, int index) {
+
+                          return   GestureDetector(onTap:(){
+                           // Navigator.push(context, MaterialPageRoute(builder: (context) => TeamDetailViewScreens(playerTeamInfoModel!.data![index].teamId.toString())));
+                          },
+                            child: Column(
+                              children: [
+                                Container(
+                                  padding: EdgeInsets.symmetric(horizontal: 2.w,vertical: 2.5.h),
+                                  width: double.infinity,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: const Color(0xffF8F9FA),
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(10),
+                                        ),
+                                        child: Image.asset(Images.teamListImage,width: 20.w,),
+                                      ),
+                                      SizedBox(width: 2.w,),
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text("${playerTeamInfoModel!.data![index].teamName}", style: fontMedium.copyWith(
+                                              fontSize: 14.sp,
+                                              color: AppColor.blackColour,
+                                            )),
+                                            SizedBox(height: 1.h,),
+                                            const DottedLine(
+                                              dashColor: Color(0xffD2D2D2),
+                                            ),
+                                            SizedBox(height: 1.h,),
+                                            Wrap(
+                                              children: [
+                                                RichText(
+                                                    text: TextSpan(children: [
+                                                      TextSpan(
+                                                          text: "Played : ",
+                                                          style: fontMedium.copyWith(
+                                                            fontSize: 12.sp,
+                                                            color: AppColor.textGrey,
+                                                          )),
+                                                      TextSpan(
+                                                          text: "${playerTeamInfoModel!.data![index].played}",
+                                                          style: fontRegular.copyWith(
+                                                            fontSize: 12.sp,
+                                                            color: AppColor.blackColour,
+                                                          )),
+                                                    ])),
+                                                SizedBox(width: 1.5.w,),
+                                                RichText(
+                                                    text: TextSpan(children: [
+                                                      TextSpan(
+                                                          text: "Won : ",
+                                                          style: fontMedium.copyWith(
+                                                            fontSize: 12.sp,
+                                                            color: AppColor.textGrey,
+                                                          )),
+                                                      TextSpan(
+                                                          text: "${playerTeamInfoModel!.data![index].matchWonBy}",
+                                                          style: fontRegular.copyWith(
+                                                            fontSize: 12.sp,
+                                                            color: AppColor.blackColour,
+                                                          )),
+                                                    ])),
+                                                SizedBox(width: 1.5.w,),
+                                                RichText(
+                                                    text: TextSpan(children: [
+                                                      TextSpan(
+                                                          text: "Lost : ",
+                                                          style: fontMedium.copyWith(
+                                                            fontSize: 12.sp,
+                                                            color: AppColor.textGrey,
+                                                          )),
+                                                      TextSpan(
+                                                          text: "${playerTeamInfoModel!.data![index].matchLossBy}",
+                                                          style: fontRegular.copyWith(
+                                                            fontSize: 12.sp,
+                                                            color: AppColor.blackColour,
+                                                          )),
+                                                    ])),
+                                              ],
+
+                                            )
+                                          ],
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        }),
+                  ),
                 ],
               ),
             ),
-            SizedBox(height: 2.h,),
-            Padding(
-              padding:  EdgeInsets.symmetric(horizontal: 5.w),
-              child: Container(
-                height: 5.h,
-                padding: EdgeInsets.symmetric(
-                  horizontal: 5.w,
-                  vertical: 1.h,
-                ),
-                decoration: BoxDecoration(
-                  color: AppColor.lightColor,
-                  borderRadius: BorderRadius.circular(30.0),
-                ),
-                child: Row(
-                  children:[
-                    Expanded(
-                      child: TextFormField(
-                        cursorColor: AppColor.secondaryColor,
-                        onChanged: (value) {
-                        },
-                        decoration: InputDecoration(
-                          isDense: true,
-                          border: InputBorder.none,
-                          hintText: "Search Team’s",
-                          hintStyle: fontRegular.copyWith(
-                              fontSize: 10.sp,
-                              color: AppColor.textMildColor
-                          ),),
-                      ),
-                    ),
 
-                    SvgPicture.asset(Images.searchIcon, color: AppColor.iconColour, width: 3.5.w,),
-                  ],
-                ),
-              ),
-            ),
-            SizedBox(height: 2.h,),
-            Expanded(
-              child:    GridView.builder(
-                physics: const NeverScrollableScrollPhysics(),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2, // 1 column
-                  childAspectRatio: 1.1, // Adjust the aspect ratio as needed
-                ),
-                itemCount: itemList.length,
-                shrinkWrap: true,
-                itemBuilder: (BuildContext context, int index) {
-                  // if(widget.scoreCardData.yetToBatPlayers!.isEmpty){
-                  //   return Text('No data found');
-                  // }
-                  final item = itemList[index];
-                  return Column(
-                    children: [
-                      Stack(
-                        children: [
-                          Image.asset(Images.teamImageGrid,width: 45.w,),
-                          Positioned(
-                            top: 1.5.h,
-                            right:3.w,
-                            child: Container(
-                              height:4.h,
-                              width:8.5.w,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(30),
-                                color: AppColor.lightColor,
-                              ),
-                              child: Icon(Icons.favorite_border_outlined,color: Color(0xff989696),),
-                            ),
-                          ),
-                        ],
-                      )
-
-                    ],
-                  );
-                },
-              ),
-            )
           ],
         ),
       ),
+
     );
   }
 }
-
-
-
-

@@ -178,7 +178,7 @@ class _MoreScreenState extends State<MoreScreen> {
                             const SeparatorDivider(),
                              GestureDetector(
                                  onTap: (){
-                                   Navigator.push(context, MaterialPageRoute(builder: (context) => TeamListScreen()));
+                                   //Navigator.push(context, MaterialPageRoute(builder: (context) => TeamListScreen()));
                                  },
                                  child: const ProfileOption("Following Teams")),
                              const SeparatorDivider(),

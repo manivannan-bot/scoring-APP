@@ -3,13 +3,14 @@ import 'package:flutter/material.dart';
 
 import 'package:sizer/sizer.dart';
 
+import '../../models/players/player_stats_model.dart';
 import '../../utils/colours.dart';
 import '../../utils/sizes.dart';
 
 
-
 class StatsBatting extends StatefulWidget {
-  const StatsBatting( {super.key});
+  final List<BattingPerformance>? battingPerformance;
+  const StatsBatting(this.battingPerformance, {super.key});
 
   @override
   State<StatsBatting> createState() => _StatsBattingState();
@@ -45,19 +46,19 @@ class _StatsBattingState extends State<StatsBatting> {
                             'Matches',
                             style: fontRegular.copyWith(fontSize: 12.sp, color: AppColor.textGrey),
                           ),
-                           SizedBox(width: 15.w),
+                          SizedBox(width: 15.w),
                           Text(
-                            '27',
+                            '${widget.battingPerformance!.first.totalMatches}',
                             style: fontRegular.copyWith(fontSize: 12.sp, color: AppColor.blackColour),
                           ),
                         ],
                       ),
                     ),
-                   Container(
-                     height: 5.h,
-                     width: 0.3.w,
-                     color: Color(0xffD3D3D3),
-                   ),
+                    Container(
+                      height: 5.h,
+                      width: 0.3.w,
+                      color: Color(0xffD3D3D3),
+                    ),
                     SizedBox(
                       width:40.w,
                       child: Row(
@@ -68,7 +69,7 @@ class _StatsBattingState extends State<StatsBatting> {
                           ),
                           SizedBox(width: 15.w),
                           Text(
-                            '50',
+                            '${widget.battingPerformance!.first.totalInnings}',
                             style: fontRegular.copyWith(fontSize: 12.sp, color: AppColor.blackColour),
                           ),
                         ],
@@ -77,7 +78,7 @@ class _StatsBattingState extends State<StatsBatting> {
                   ],
                 ),
               ),
-              DottedLine(
+              const DottedLine(
                 dashColor: Color(0xffD2D2D2),
               ),
               Padding(
@@ -95,7 +96,7 @@ class _StatsBattingState extends State<StatsBatting> {
                           ),
                           SizedBox(width: 15.w),
                           Text(
-                            "290",
+                            '${widget.battingPerformance!.first.totalRuns}',
                             style: fontRegular.copyWith(fontSize: 12.sp, color: AppColor.blackColour),
                           ),
                         ],
@@ -116,7 +117,7 @@ class _StatsBattingState extends State<StatsBatting> {
                           ),
                           SizedBox(width: 15.w),
                           Text(
-                            '222',
+                            '${widget.battingPerformance!.first.totalBalls}',
                             style: fontRegular.copyWith(fontSize: 12.sp, color: AppColor.blackColour),
                           ),
                         ],
@@ -143,7 +144,7 @@ class _StatsBattingState extends State<StatsBatting> {
                           ),
                           SizedBox(width: 15.w),
                           Text(
-                            '120',
+                            '${widget.battingPerformance!.first.highestScore}',
                             style: fontRegular.copyWith(fontSize: 12.sp, color: AppColor.blackColour),
                           ),
                         ],
@@ -164,7 +165,7 @@ class _StatsBattingState extends State<StatsBatting> {
                           ),
                           SizedBox(width: 15.w),
                           Text(
-                            '32.5',
+                            '${widget.battingPerformance!.first.average}',
                             style: fontRegular.copyWith(fontSize: 12.sp, color: AppColor.blackColour),
                           ),
                         ],
@@ -191,7 +192,7 @@ class _StatsBattingState extends State<StatsBatting> {
                           ),
                           SizedBox(width: 15.w),
                           Text(
-                            '200',
+                            '${widget.battingPerformance!.first.strikeRate}',
                             style: fontRegular.copyWith(fontSize: 12.sp, color: AppColor.blackColour),
                           ),
                         ],
@@ -212,7 +213,7 @@ class _StatsBattingState extends State<StatsBatting> {
                           ),
                           SizedBox(width: 15.w),
                           Text(
-                            '4',
+                            '${widget.battingPerformance!.first.totalNotOut}',
                             style: fontRegular.copyWith(fontSize: 12.sp, color: AppColor.blackColour),
                           ),
                         ],
@@ -239,7 +240,7 @@ class _StatsBattingState extends State<StatsBatting> {
                           ),
                           SizedBox(width: 15.w),
                           Text(
-                            '22',
+                            '${widget.battingPerformance!.first.totalFour}',
                             style: fontRegular.copyWith(fontSize: 12.sp, color: AppColor.blackColour),
                           ),
                         ],
@@ -260,7 +261,7 @@ class _StatsBattingState extends State<StatsBatting> {
                           ),
                           SizedBox(width: 15.w),
                           Text(
-                            '22',
+                            '${widget.battingPerformance!.first.totalSix}',
                             style: fontRegular.copyWith(fontSize: 12.sp, color: AppColor.blackColour),
                           ),
                         ],
@@ -287,7 +288,7 @@ class _StatsBattingState extends State<StatsBatting> {
                           ),
                           SizedBox(width: 15.w),
                           Text(
-                            '2',
+                            '${widget.battingPerformance!.first.totalDuck}',
                             style: fontRegular.copyWith(fontSize: 12.sp, color: AppColor.blackColour),
                           ),
                         ],
@@ -308,7 +309,7 @@ class _StatsBattingState extends State<StatsBatting> {
                           ),
                           SizedBox(width: 15.w),
                           Text(
-                            '4',
+                            '${widget.battingPerformance!.first.battingFifty}',
                             style: fontRegular.copyWith(fontSize: 12.sp, color: AppColor.blackColour),
                           ),
                         ],
@@ -335,7 +336,7 @@ class _StatsBattingState extends State<StatsBatting> {
                           ),
                           SizedBox(width: 15.w),
                           Text(
-                            '1',
+                            '${widget.battingPerformance!.first.hundred}',
                             style: fontRegular.copyWith(fontSize: 12.sp, color: AppColor.blackColour),
                           ),
                         ],
@@ -356,7 +357,7 @@ class _StatsBattingState extends State<StatsBatting> {
                           ),
                           SizedBox(width: 15.w),
                           Text(
-                            '0',
+                            '${widget.battingPerformance!.first.twoHundred}',
                             style: fontRegular.copyWith(fontSize: 12.sp, color: AppColor.blackColour),
                           ),
                         ],

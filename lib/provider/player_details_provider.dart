@@ -2,34 +2,33 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
-import 'package:http/http.dart' as http;
-import 'package:scoring_app/homescreens/liveviewscreens/Scorecard_screens.dart';
-import '../models/ScoreCard/score_card_response_model.dart';
-import '../models/ScoreCard/yet_to_bat.dart';
-import '../models/commentary/commentary_four_six_model.dart';
-import '../models/commentary/commentary_overs_model.dart';
-import '../models/commentary/commentary_wicket_model.dart';
-import '../models/homescreen/live_matches_model.dart';
-import '../models/players/match_players_model.dart';
+import 'package:scoring_app/models/homescreen/user_profile_model.dart';
+
+
+import '../models/players/player_info_model.dart';
+import '../models/players/player_matches_model.dart';
+import '../models/players/player_stats_model.dart';
+import '../models/players/player_team_info_model.dart';
+import '../models/players/players_overview_model.dart';
 import '../utils/app_constants.dart';
+import 'package:http/http.dart' as http;
 
-class ScoringProvider extends ChangeNotifier{
+class PlayerDetailsProvider extends ChangeNotifier{
+  PlayerOverview playerOverview=PlayerOverview();
+  PlayerStatsModel playerStatsModel=PlayerStatsModel();
+  PlayerMatchesModel playerMatchesModel=PlayerMatchesModel();
+  PlayerTeamInfoModel playerTeamInfoModel=PlayerTeamInfoModel();
+  PlayerInfoModel playerInfoModel=PlayerInfoModel();
+  UserProfileModel userProfileModel=UserProfileModel();
 
-  LiveMatchesModel liveMatchesModel=LiveMatchesModel();
-  ScoreCardResponseModel scoreCardResponseModel=ScoreCardResponseModel();
-  ScoreCardYetTobat scoreCardYetTobat=ScoreCardYetTobat();
-  CommentaryOversModel commentaryOversModel=CommentaryOversModel();
-  CommentaryWicketModel commentaryWicketModel=CommentaryWicketModel();
-  CommentaryFourSixModel commentaryFourSixModel=CommentaryFourSixModel();
-  MatchPlayersModel matchPlayersModel=MatchPlayersModel();
 
-  Future<ScoreCardResponseModel> getScoreCard(String matchId,String teamId) async {
+  Future<PlayerOverview> getPlayerOverView(String playerId) async {
 
     // SharedPreferences preferences = await SharedPreferences.getInstance();
     // String? accToken = preferences.getString("access_token");
     try {
       final response = await http.get(
-        Uri.parse('${AppConstants.scoreCardDetails}/$matchId/$teamId'),
+        Uri.parse('${AppConstants.playerOverview}/$playerId'),
         // headers: {
         //   // 'Content-Type': 'application/json; charset=UTF-8',
         //   // 'Authorization': 'Bearer $accToken',
@@ -38,7 +37,7 @@ class ScoringProvider extends ChangeNotifier{
       var decodedJson = json.decode(response.body);
       print(decodedJson);
       if (response.statusCode == 200) {
-        scoreCardResponseModel = ScoreCardResponseModel.fromJson(decodedJson);
+        playerOverview = PlayerOverview.fromJson(decodedJson);
 
         notifyListeners();
       } else {
@@ -53,46 +52,15 @@ class ScoringProvider extends ChangeNotifier{
     } catch (e) {
       print(e);
     }
-    return scoreCardResponseModel;
+    return playerOverview;
   }
-  Future<ScoreCardYetTobat> playersYetToBat(String matchId,String teamId) async {
-
-    try {
-      final response = await http.get(
-        Uri.parse('${AppConstants.yetTobat}/$matchId/$teamId'),
-        // headers: {
-        //   // 'Content-Type': 'application/json; charset=UTF-8',
-        //   // 'Authorization': 'Bearer $accToken',
-        // },
-      );
-      var decodedJson = json.decode(response.body);
-      print(decodedJson);
-      if (response.statusCode == 200) {
-        scoreCardYetTobat = ScoreCardYetTobat.fromJson(decodedJson);
-
-        notifyListeners();
-      } else {
-        throw const HttpException('Failed to load data');
-      }
-    } on SocketException {
-      print('No internet connection');
-    } on HttpException {
-      print('Failed to load data');
-    } on FormatException {
-      print('yet to bat players  - Invalid data format');
-    } catch (e) {
-      print(e);
-    }
-    return scoreCardYetTobat;
-  }
-
-  Future<CommentaryOversModel> getCommentaryOvers(String matchId,String teamId) async {
+  Future<PlayerStatsModel> getPlayerStats(String playerId) async {
 
     // SharedPreferences preferences = await SharedPreferences.getInstance();
     // String? accToken = preferences.getString("access_token");
     try {
       final response = await http.get(
-        Uri.parse('${AppConstants.commentaryOvers}/$matchId/$teamId'),
+        Uri.parse('${AppConstants.playerStats}/$playerId'),
         // headers: {
         //   // 'Content-Type': 'application/json; charset=UTF-8',
         //   // 'Authorization': 'Bearer $accToken',
@@ -101,7 +69,7 @@ class ScoringProvider extends ChangeNotifier{
       var decodedJson = json.decode(response.body);
       print(decodedJson);
       if (response.statusCode == 200) {
-        commentaryOversModel = CommentaryOversModel.fromJson(decodedJson);
+        playerStatsModel = PlayerStatsModel.fromJson(decodedJson);
 
         notifyListeners();
       } else {
@@ -116,15 +84,15 @@ class ScoringProvider extends ChangeNotifier{
     } catch (e) {
       print(e);
     }
-    return commentaryOversModel;
+    return playerStatsModel;
   }
-  Future<CommentaryWicketModel> getCommentaryWickets(String matchId,String teamId) async {
+  Future<PlayerMatchesModel> getPlayerMatches(String playerId) async {
 
     // SharedPreferences preferences = await SharedPreferences.getInstance();
     // String? accToken = preferences.getString("access_token");
     try {
       final response = await http.get(
-        Uri.parse('${AppConstants.commentaryWickets}/$matchId/$teamId'),
+        Uri.parse('${AppConstants.playerMatches}/$playerId'),
         // headers: {
         //   // 'Content-Type': 'application/json; charset=UTF-8',
         //   // 'Authorization': 'Bearer $accToken',
@@ -133,7 +101,7 @@ class ScoringProvider extends ChangeNotifier{
       var decodedJson = json.decode(response.body);
       print(decodedJson);
       if (response.statusCode == 200) {
-        commentaryWicketModel = CommentaryWicketModel.fromJson(decodedJson);
+        playerMatchesModel = PlayerMatchesModel.fromJson(decodedJson);
 
         notifyListeners();
       } else {
@@ -148,16 +116,15 @@ class ScoringProvider extends ChangeNotifier{
     } catch (e) {
       print(e);
     }
-    return commentaryWicketModel;
+    return playerMatchesModel;
   }
-
-  Future<CommentaryFourSixModel> getCommentaryFoursSixes(String matchId,String teamId) async {
+  Future<PlayerTeamInfoModel> getPlayerTeamInfo(String playerId) async {
 
     // SharedPreferences preferences = await SharedPreferences.getInstance();
     // String? accToken = preferences.getString("access_token");
     try {
       final response = await http.get(
-        Uri.parse('${AppConstants.commentaryFoursSixes}/$matchId/$teamId'),
+        Uri.parse('${AppConstants.playerTeamInfo}/$playerId'),
         // headers: {
         //   // 'Content-Type': 'application/json; charset=UTF-8',
         //   // 'Authorization': 'Bearer $accToken',
@@ -166,7 +133,7 @@ class ScoringProvider extends ChangeNotifier{
       var decodedJson = json.decode(response.body);
       print(decodedJson);
       if (response.statusCode == 200) {
-        commentaryFourSixModel = CommentaryFourSixModel.fromJson(decodedJson);
+        playerTeamInfoModel = PlayerTeamInfoModel.fromJson(decodedJson);
 
         notifyListeners();
       } else {
@@ -181,16 +148,15 @@ class ScoringProvider extends ChangeNotifier{
     } catch (e) {
       print(e);
     }
-    return commentaryFourSixModel;
+    return playerTeamInfoModel;
   }
-
-  Future<MatchPlayersModel> getMatchPlayers(String matchId,String teamId) async {
+  Future<PlayerInfoModel> getPlayerInfo(String playerId) async {
 
     // SharedPreferences preferences = await SharedPreferences.getInstance();
     // String? accToken = preferences.getString("access_token");
     try {
       final response = await http.get(
-        Uri.parse('${AppConstants.matchPlayers}/$matchId/$teamId'),
+        Uri.parse('${AppConstants.playerInfo}/$playerId'),
         // headers: {
         //   // 'Content-Type': 'application/json; charset=UTF-8',
         //   // 'Authorization': 'Bearer $accToken',
@@ -199,7 +165,7 @@ class ScoringProvider extends ChangeNotifier{
       var decodedJson = json.decode(response.body);
       print(decodedJson);
       if (response.statusCode == 200) {
-        matchPlayersModel = MatchPlayersModel.fromJson(decodedJson);
+        playerInfoModel = PlayerInfoModel.fromJson(decodedJson);
 
         notifyListeners();
       } else {
@@ -214,8 +180,42 @@ class ScoringProvider extends ChangeNotifier{
     } catch (e) {
       print(e);
     }
-    return matchPlayersModel;
+    return playerInfoModel;
   }
+  Future<UserProfileModel> getUserProfile(String userId) async {
+    var body = json.encode({
+      "user_id":userId
+    });
+    // SharedPreferences preferences = await SharedPreferences.getInstance();
+    // String? accToken = preferences.getString("access_token");
+    try {
+      final response = await http.post(
+        Uri.parse('${AppConstants.userProfile}'),
+        body: body,
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+          //'Authorization': 'Bearer $accToken',
+        },
+      );
+      var decodedJson = json.decode(response.body);
+      print(decodedJson);
+      if (response.statusCode == 200) {
+        userProfileModel = UserProfileModel.fromJson(decodedJson);
 
+        notifyListeners();
+      } else {
+        throw const HttpException('Failed to load data');
+      }
+    } on SocketException {
+      print('No internet connection');
+    } on HttpException {
+      print('Failed to load data');
+    } on FormatException {
+      print('All Matches  - Invalid data format');
+    } catch (e) {
+      print(e);
+    }
+    return userProfileModel;
+  }
 
 }
