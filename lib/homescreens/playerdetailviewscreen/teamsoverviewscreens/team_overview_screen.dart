@@ -102,6 +102,7 @@ class _TeamOverviewScreenState extends State<TeamOverviewScreen> {
                     itemCount: teamOverview!.data!.recentTeamForm!.length,
                     itemBuilder: (context, int index) {
                       final item = teamOverview!.data!.recentTeamForm![index];
+
                       return   Column(
                         children: [
                           Container(
@@ -161,8 +162,7 @@ class _TeamOverviewScreenState extends State<TeamOverviewScreen> {
                           height: 20.w,
                           child: CircularProgressIndicator(
                             value: teamOverview!.data!.teamStats!.matchWonCount! /
-                                (teamOverview!.data!.teamStats!.matchWonCount! +
-                                    teamOverview!.data!.teamStats!.matchLossCount!),
+                                (teamOverview!.data!.teamStats!.matchCount!),
                             valueColor: const AlwaysStoppedAnimation<Color>(Color(0xff008000)),  // Color for "Won"
                             backgroundColor: AppColor.redColor,  // Color for "Lost"
                             strokeWidth: 6.0,

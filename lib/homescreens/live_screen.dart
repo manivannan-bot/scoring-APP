@@ -20,9 +20,7 @@ class LiveScreen extends StatefulWidget {
 }
 
 class _LiveScreenState extends State<LiveScreen> {
-  final List<Map<String,dynamic>>itemList=[
-    {},{},{},{},{},{},{},{},{},{},{},{},
-  ];
+
   LiveMatchesModel? liveMatchesModel;
   @override
   void initState() {

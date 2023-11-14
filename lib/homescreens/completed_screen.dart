@@ -20,9 +20,7 @@ class CompletedScreen extends StatefulWidget {
 }
 
 class _CompletedScreenState extends State<CompletedScreen> {
-  final List<Map<String,dynamic>>itemList=[
-    {},{},{},
-  ];
+
   FinishedMatchesModel?finishedMatchesModel;
   void initState() {
     // TODO: implement initState
@@ -41,6 +39,9 @@ class _CompletedScreenState extends State<CompletedScreen> {
   Widget build(BuildContext context) {
     if(finishedMatchesModel==null){
       return Center(child: CircularProgressIndicator(),);
+    }
+    if(finishedMatchesModel!.data!.isEmpty){
+      return Center(child: Text('No Matches found'));
     }
     return ListView.separated(
         physics: const BouncingScrollPhysics(),

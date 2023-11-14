@@ -8,6 +8,7 @@ import '../../../models/teams/team_matches_model.dart';
 import '../../../utils/colours.dart';
 import '../../../utils/images.dart';
 import '../../../utils/sizes.dart';
+import '../../liveviewscreens/live_screen_home.dart';
 
 
 
@@ -39,7 +40,12 @@ class _TeamLiveMatchesState extends State<TeamLiveMatches> {
           itemBuilder: (context, int index) {
             final item = widget.liveMatches![index];
             return GestureDetector(onTap: (){
-             // Navigator.push(context, MaterialPageRoute(builder: (context) => TeamMatchesLiveView(item.teams!.matchId.toString(),item.teams!.team1Id.toString(),item.teams!.team2Id.toString())));
+              if(item.teams!.currentInnings==1){
+                Navigator.push(context, MaterialPageRoute(builder: (context) => LiveScreenHome(item.teams!.matchId.toString(),item.teams!.team1Id.toString())));
+              }else{
+                Navigator.push(context, MaterialPageRoute(builder: (context) => LiveScreenHome(item.teams!.matchId.toString(),item.teams!.team2Id.toString())));
+              }
+
             },
               child: Padding(
                 padding:  EdgeInsets.symmetric(horizontal: 3.w),
@@ -49,7 +55,7 @@ class _TeamLiveMatchesState extends State<TeamLiveMatches> {
                       padding: EdgeInsets.symmetric(vertical: 1.5.h),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
-                        color: Color(0xffF8F9FA),
+                        color: const Color(0xffF8F9FA),
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,

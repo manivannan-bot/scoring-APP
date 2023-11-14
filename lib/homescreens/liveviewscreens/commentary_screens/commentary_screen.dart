@@ -63,19 +63,9 @@ class _CommentaryScreenState extends State<CommentaryScreen>with SingleTickerPro
                 labelPadding: EdgeInsets.symmetric(vertical: 0.1.h,horizontal: 4.w),
                 labelColor: Colors.white,
                 indicatorPadding: EdgeInsets.zero,
-                // unselectedLabelColor: AppColor.textColor,
-                // unselectedLabelStyle: TextStyle(
-                //   backgroundColor: Colors.grey, // Background color of inactive tabs
-                // ),
                 indicatorColor: Colors.transparent,
                 isScrollable: true,
-                // dividerColor: Colors.transparent,
-                // labelPadding: EdgeInsets.only
-                //   (bottom: 0.5.h) + EdgeInsets.symmetric(
-                //     horizontal: 4.w
-                // ),
                 indicatorSize: TabBarIndicatorSize.tab,
-                // indicatorColor: AppColor.secondaryColor,
                 controller: tabController,
                 tabs: [
                   Tab(
@@ -135,9 +125,8 @@ class _CommentaryScreenState extends State<CommentaryScreen>with SingleTickerPro
 
                     CommentaryAllScreen(),
                     CommentryOvers(widget.matchId,widget.team2Id),
-                    CommentaryWicketScreen(widget.matchId,widget.team2Id),
+                    CommentaryWicketScreen(widget.matchId,widget.team1Id),
                     CommentaryFourSix(widget.matchId,widget.team2Id),
-
 
                   ]),
             ),

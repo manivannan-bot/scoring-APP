@@ -39,14 +39,26 @@ class _LiveScreenHomeState extends State<LiveScreenHome>with SingleTickerProvide
       setState(() {
         scoreCardTopModel=value;
         currentInning=value.matches!.currentInnings;
-        if(value.matches!.team1Id==value.matches!.tossWonBy && value.matches!.choseTo=="Bat"){
-          batTeamId=value.matches!.team1Id;
-          bowlTeamId=value.matches!.team2Id;
-        }else{
-          bowlTeamId=value.matches!.team1Id;
-        batTeamId=value.matches!.team2Id;
-        }
+        if(value.matches!.currentInnings==1) {
+          if (value.matches!.team1Id == value.matches!.tossWonBy &&
+              value.matches!.choseTo == "Bat") {
+            batTeamId = value.matches!.team1Id;
+            bowlTeamId = value.matches!.team2Id;
+          } else {
+            bowlTeamId = value.matches!.team1Id;
+            batTeamId = value.matches!.team2Id;
+          }
+        }else if(value.matches!.currentInnings==2){
+          if (value.matches!.team1Id == value.matches!.tossWonBy &&
+              value.matches!.choseTo == "Bat") {
+             bowlTeamId= value.matches!.team1Id;
+             batTeamId= value.matches!.team2Id;
+          } else {
+             batTeamId= value.matches!.team1Id;
+             bowlTeamId= value.matches!.team2Id;
+          }
 
+        }
       });
     });
   }
