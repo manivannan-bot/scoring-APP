@@ -1,5 +1,6 @@
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
+import 'package:scoring_app/models/teams/team_info_model.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../../utils/colours.dart';
@@ -8,7 +9,8 @@ import '../../../utils/sizes.dart';
 
 
 class TeamInfoScreen extends StatefulWidget {
-  const TeamInfoScreen({super.key});
+  final TeamsDetails? teamsDetails;
+  const TeamInfoScreen(this.teamsDetails, {super.key});
 
   @override
   State<TeamInfoScreen> createState() => _TeamInfoScreenState();
@@ -25,7 +27,7 @@ class _TeamInfoScreenState extends State<TeamInfoScreen> {
               padding: EdgeInsets.symmetric(vertical: 1.5.h,horizontal: 5.w),
               width: double.infinity,
               height: 70.h,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                   borderRadius: BorderRadius.only(topRight: Radius.circular(30),topLeft: Radius.circular(30)),
                   color: AppColor.lightColor
               ),
@@ -48,9 +50,9 @@ class _TeamInfoScreenState extends State<TeamInfoScreen> {
                     ),
                     child: Column(
                       children: [
-                        _buildRow("State", "Tamil nadu"),
+                        _buildRow("State", "${widget.teamsDetails!.teamState}"),
                         _buildDivider(),
-                        _buildRow("City", "Chennai"),
+                        _buildRow("City", "${widget.teamsDetails!.teamCity}"),
                       ],
                     ),
                   ),
@@ -89,7 +91,7 @@ class _TeamInfoScreenState extends State<TeamInfoScreen> {
   }
 
   Widget _buildDivider() {
-    return DottedLine(
+    return const DottedLine(
       dashColor: Color(0xffD2D2D2),
     );
   }

@@ -20,6 +20,10 @@ static const String playerMatches = '$baseUrl/player-matches';
 static const String playerTeamInfo= '$baseUrl/player-team-info';
 static const String playerInfo= '$baseUrl/player-info';
   static const String userProfile = '$baseUrl/user-profile';
+  static const String teamOverview = '$baseUrl/team-overview';
+  static const String teamMatches = '$baseUrl/team-matches';
+  static const String teamPlayers = '$baseUrl/team-players';
+  static const String teamInfo = '$baseUrl/team-info';
 
 }
 

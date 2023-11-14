@@ -3,7 +3,7 @@ import 'package:flutter_bounceable/flutter_bounceable.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:scoring_app/morescreens/player_search_screen.dart';
 import 'package:scoring_app/morescreens/teams_all_lists.dart';
-import 'package:scoring_app/morescreens/teams_list_screen.dart';
+
 import 'package:sizer/sizer.dart';
 import '../utils/colours.dart';
 import '../utils/images.dart';

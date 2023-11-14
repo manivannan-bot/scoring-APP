@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-
 import 'package:sizer/sizer.dart';
 
 import '../../../models/teams/team_players_model.dart';
@@ -8,15 +7,17 @@ import '../../../utils/colours.dart';
 import '../../../utils/images.dart';
 import '../../../utils/sizes.dart';
 
-class TeamsBatterListScreen extends StatefulWidget {
-  final List<Batsman>? batsman;
-  const TeamsBatterListScreen(this.batsman, {super.key});
+
+
+class TeamsAllRounderListScreen extends StatefulWidget {
+  final List<AllRounder>? allRounder;
+  const TeamsAllRounderListScreen(this.allRounder,  {super.key});
 
   @override
-  State<TeamsBatterListScreen> createState() => _TeamsBatterListScreenState();
+  State<TeamsAllRounderListScreen> createState() => _TeamsAllRounderListScreenState();
 }
 
-class _TeamsBatterListScreenState extends State<TeamsBatterListScreen> {
+class _TeamsAllRounderListScreenState extends State<TeamsAllRounderListScreen> {
 
   @override
   Widget build(BuildContext context) {
@@ -32,14 +33,14 @@ class _TeamsBatterListScreenState extends State<TeamsBatterListScreen> {
             separatorBuilder: (context, _) {
               return Padding(
                 padding: EdgeInsets.only(bottom: 0.h),
-                child: Divider(
+                child: const Divider(
                   color: Color(0xffD3D3D3),
                 ),
               );
             },
-            itemCount: widget.batsman!.length,
+            itemCount: widget.allRounder!.length,
             itemBuilder: (context, int index) {
-              final item = widget.batsman![index];
+              final item = widget.allRounder![index];
               return   Padding(
                 padding:  EdgeInsets.only(top: 0.5.h,bottom: 0.8.h),
                 child: Row(
@@ -57,19 +58,19 @@ class _TeamsBatterListScreenState extends State<TeamsBatterListScreen> {
                           ),),
                         ),
                         SizedBox(height: 0.5.h,),
-                        (item.battingStyle!=null||item.battingStyle!.isNotEmpty)?Row(
+                        (item.allRounderType!=null)?Row(
                           children: [
                             const CircleAvatar(
                               backgroundColor: AppColor.pri,
                               radius: 4,
                             ),
                             SizedBox(width: 1.w,),
-                            Text("${item.battingStyle}",style: fontRegular.copyWith(
+                            Text("${item.allRounderType}",style: fontRegular.copyWith(
                               fontSize: 11.sp,
                               color: Color(0xff555555),
                             ),),
                           ],
-                        ):const Text('')
+                        ):const Text(''),
                       ],),
                     Spacer(),
                     SvgPicture.asset(Images.arrowICon,width: 6.5.w,),

@@ -7,13 +7,16 @@ import 'package:scoring_app/homescreens/playerdetailviewscreen/teamsoverviewscre
 
 import 'package:sizer/sizer.dart';
 
+import '../../../models/teams/team_info_model.dart';
+import '../../../provider/teams_provider.dart';
 import '../../../utils/colours.dart';
 import '../../../utils/images.dart';
 import '../../../utils/sizes.dart';
 
 
 class TeamDetailViewScreens extends StatefulWidget {
-  const TeamDetailViewScreens({super.key});
+  final String teamId;
+  const TeamDetailViewScreens(this.teamId, {super.key});
 
   @override
   State<TeamDetailViewScreens> createState() => _TeamDetailViewScreensState();
@@ -21,13 +24,27 @@ class TeamDetailViewScreens extends StatefulWidget {
 
 class _TeamDetailViewScreensState extends State<TeamDetailViewScreens>with SingleTickerProviderStateMixin {
   late TabController tabController;
+  TeamInfoModel? teamInfoModel;
+
   void initState() {
-    // TODO: implement initState
     super.initState();
     tabController = TabController(length: 4, vsync: this);
+    fetchData();
   }
+  fetchData(){
+    TeamsProvider().getTeamInfo(widget.teamId).then((value){
+      setState(() {
+        teamInfoModel=value;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    if(teamInfoModel==null){
+      return  Center(child: CircularProgressIndicator(),);
+    }
+
     return Scaffold(
       body: Column(
         children: [
@@ -60,7 +77,7 @@ class _TeamDetailViewScreensState extends State<TeamDetailViewScreens>with Singl
                   children: [
                     ClipOval(child: Image.asset(Images.teamListImage,width: 25.w,)),
                     SizedBox(height: 0.h,),
-                    Text('Toss and Tails',
+                    Text('${teamInfoModel!.data!.teams!.teamName}',
                       style: fontSemiBold.copyWith(fontSize: 16.sp,color: AppColor.lightColor),),
                   ],
                 ),
@@ -89,10 +106,10 @@ class _TeamDetailViewScreensState extends State<TeamDetailViewScreens>with Singl
             child: TabBarView(
                 controller: tabController,
                 children: [
-                   TeamOverviewScreen(),
-                   TeamMatchesScreen(),
-                  TeamPlayersDetailViewScreen(),
-                   TeamInfoScreen(),
+                   TeamOverviewScreen(widget.teamId),
+                   TeamMatchesScreen(widget.teamId),
+                  TeamPlayersDetailViewScreen(widget.teamId),
+                   TeamInfoScreen(teamInfoModel!.data!.teamsDetails),
                 ]
             ),
           ),

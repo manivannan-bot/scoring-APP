@@ -53,7 +53,7 @@ class _LiveDetailViewScreenState extends State<LiveDetailViewScreen> {
                 topRight: Radius.circular(20), topLeft: Radius.circular(20)),
             color: AppColor.blackColour,
           ),
-          child: Row(
+          child: (liveScoreCardModel!.data!.currRunRate!=null)?Row(
             children: [
               Text(
                 "CRR : ${liveScoreCardModel!.data!.currRunRate!.runRate}",
@@ -84,7 +84,7 @@ class _LiveDetailViewScreenState extends State<LiveDetailViewScreen> {
                 ),
               ) : Text('')
             ],
-          ),
+          ):Text(''),
         ),
         SizedBox(height: 2.h,),
         Padding(

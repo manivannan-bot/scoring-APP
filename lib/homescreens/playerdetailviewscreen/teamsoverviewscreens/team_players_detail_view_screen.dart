@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:scoring_app/homescreens/playerdetailviewscreen/teamsoverviewscreens/teams_all_rounder_list_screen.dart';
 import 'package:scoring_app/homescreens/playerdetailviewscreen/teamsoverviewscreens/teams_batter_list_screen.dart';
+import 'package:scoring_app/homescreens/playerdetailviewscreen/teamsoverviewscreens/teams_bowler_list_screen.dart';
 
 import 'package:sizer/sizer.dart';
 
+import '../../../models/teams/team_players_model.dart';
+import '../../../provider/teams_provider.dart';
 import '../../../utils/colours.dart';
 import '../../../utils/sizes.dart';
 
 
-
 class TeamPlayersDetailViewScreen extends StatefulWidget {
-  const TeamPlayersDetailViewScreen({super.key});
+  final String teamId;
+  const TeamPlayersDetailViewScreen(this.teamId, {super.key});
 
   @override
   State<TeamPlayersDetailViewScreen> createState() => _TeamPlayersDetailViewScreenState();
@@ -17,18 +21,40 @@ class TeamPlayersDetailViewScreen extends StatefulWidget {
 
 class _TeamPlayersDetailViewScreenState extends State<TeamPlayersDetailViewScreen>with SingleTickerProviderStateMixin {
   late TabController tabController;
+  TeamPlayersModel? teamPlayersModel;
   void initState() {
-    // TODO: implement initState
     super.initState();
     tabController = TabController(length: 3, vsync: this);
+    fetchData();
+  }
+  fetchData(){
+    TeamsProvider().getTeamPlayers(widget.teamId).then((value) {
+      setState(() {
+        teamPlayersModel=value;
+      });
+    });
   }
   @override
   Widget build(BuildContext context) {
+    if(teamPlayersModel==null){
+      return const SizedBox(
+        height: 50,
+        width: 50,
+        child: Center(
+          child: CircularProgressIndicator(
+            backgroundColor: Colors.white,
+          ),
+        ),
+      );
+    }
+    if(teamPlayersModel!.data==null){
+      return const Center(child: Text('No data found'),);
+    }
     return Scaffold(
       body: Container(
         width: double.infinity,
         height: 70.h,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
             borderRadius: BorderRadius.only(topRight: Radius.circular(30),topLeft: Radius.circular(30)),
             color: AppColor.lightColor
         ),
@@ -40,8 +66,8 @@ class _TeamPlayersDetailViewScreenState extends State<TeamPlayersDetailViewScree
                 padding:  EdgeInsets.symmetric(horizontal: 4.w,vertical: 1.h),
                 child: TabBar(
                   unselectedLabelColor: AppColor.unselectedTabColor,
-                  labelColor:  Color(0xffD78108),
-                  indicatorColor: Color(0xffD78108),
+                  labelColor:  const Color(0xffD78108),
+                  indicatorColor: const Color(0xffD78108),
                   isScrollable: true,
                   controller: tabController,
                   indicatorWeight: 2.0,
@@ -59,8 +85,9 @@ class _TeamPlayersDetailViewScreenState extends State<TeamPlayersDetailViewScree
               child: TabBarView(
                   controller: tabController,
                   children: [
-                    TeamsBatterListScreen(),
-                    Container(),Container(),
+                    TeamsBatterListScreen(teamPlayersModel!.data!.batsman),
+                    TeamsBowlerListScreen(teamPlayersModel!.data!.bowler),
+                    TeamsAllRounderListScreen(teamPlayersModel!.data!.allRounder),
 
                   ]
               ),

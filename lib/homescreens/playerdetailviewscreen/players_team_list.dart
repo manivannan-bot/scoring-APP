@@ -86,7 +86,8 @@ class _TeamListScreenState extends State<TeamListScreen> {
                         itemBuilder: (context, int index) {
 
                           return   GestureDetector(onTap:(){
-                            //Navigator.push(context, MaterialPageRoute(builder: (context) => TeamDetailViewScreens(playerTeamInfoModel!.data![index].teamId.toString())));
+                            print('ID:${playerTeamInfoModel!.data![index].teamId}');
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => TeamDetailViewScreens(playerTeamInfoModel!.data![index].teamId.toString())));
                           },
                             child: Column(
                               children: [

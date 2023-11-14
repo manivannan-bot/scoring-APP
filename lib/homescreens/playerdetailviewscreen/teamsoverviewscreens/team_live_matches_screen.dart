@@ -4,44 +4,44 @@ import 'package:flutter_dash/flutter_dash.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:sizer/sizer.dart';
 
+import '../../../models/teams/team_matches_model.dart';
 import '../../../utils/colours.dart';
 import '../../../utils/images.dart';
 import '../../../utils/sizes.dart';
 
 
 
+
 class TeamLiveMatches extends StatefulWidget {
-  const TeamLiveMatches({super.key});
+  final List<LiveMatches>? liveMatches;
+  const TeamLiveMatches(this.liveMatches, {super.key});
 
   @override
   State<TeamLiveMatches> createState() => _TeamLiveMatchesState();
 }
 
 class _TeamLiveMatchesState extends State<TeamLiveMatches> {
-  final List<Map<String,dynamic>>itemList=[
-    {},{},
-  ];
+
   @override
   Widget build(BuildContext context) {
     return MediaQuery.removePadding(
       context: context,
       removeTop: true,  // Set this to true to remove top padding
       removeBottom: true,
-      child: GestureDetector(
-        onTap: (){
-          // Navigator.push(context, MaterialPageRoute(builder: (context) => CRD()));
-        },
-        child: ListView.separated(
-            physics: const BouncingScrollPhysics(),
-            separatorBuilder: (context, _) {
-              return Padding(
-                padding: EdgeInsets.only(bottom: 2.h),
-              );
+      child: ListView.separated(
+          physics: const BouncingScrollPhysics(),
+          separatorBuilder: (context, _) {
+            return Padding(
+              padding: EdgeInsets.only(bottom: 2.h),
+            );
+          },
+          itemCount:widget.liveMatches!.length ,
+          itemBuilder: (context, int index) {
+            final item = widget.liveMatches![index];
+            return GestureDetector(onTap: (){
+             // Navigator.push(context, MaterialPageRoute(builder: (context) => TeamMatchesLiveView(item.teams!.matchId.toString(),item.teams!.team1Id.toString(),item.teams!.team2Id.toString())));
             },
-            itemCount:itemList.length ,
-            itemBuilder: (context, int index) {
-              final item = itemList[index];
-              return Padding(
+              child: Padding(
                 padding:  EdgeInsets.symmetric(horizontal: 3.w),
                 child: Column(
                   children: [
@@ -66,8 +66,7 @@ class _TeamLiveMatchesState extends State<TeamLiveMatches> {
                                       children: [
                                         Image.asset(Images.teamaLogo,width: 10.w,),
                                         SizedBox(width: 2.w,),
-                                        Text(
-                                            "T&T",
+                                        Text("${item.teams!.team1Name}",
                                             style: fontMedium.copyWith(
                                               fontSize: 13.sp,
                                               color: AppColor.pri,
@@ -77,7 +76,7 @@ class _TeamLiveMatchesState extends State<TeamLiveMatches> {
                                         RichText(
                                             text: TextSpan(children: [
                                               TextSpan(
-                                                  text: "28",
+                                                  text: "${item.teamInnings!.first.totalScore}",
                                                   style: fontMedium.copyWith(
                                                     fontSize: 13.sp,
                                                     color: AppColor.pri,
@@ -89,7 +88,7 @@ class _TeamLiveMatchesState extends State<TeamLiveMatches> {
                                                       color: AppColor.pri
                                                   )),
                                               TextSpan(
-                                                  text: "0",
+                                                  text: "${item.teamInnings!.first.totalWickets}",
                                                   style: fontMedium.copyWith(
                                                       fontSize: 13.sp,
                                                       color: AppColor.pri
@@ -98,7 +97,7 @@ class _TeamLiveMatchesState extends State<TeamLiveMatches> {
                                         SizedBox(width: 2.w,),
                                         RichText(text: TextSpan(children: [
                                           TextSpan(
-                                              text: "0.0",
+                                              text: "${item.teamInnings!.first.currOvers}",
                                               style: fontMedium.copyWith(
                                                   fontSize: 13.sp,
                                                   color: const Color(0xff444444)
@@ -110,14 +109,14 @@ class _TeamLiveMatchesState extends State<TeamLiveMatches> {
                                                   color: const Color(0xff444444)
                                               )),
                                           TextSpan(
-                                              text: "20",
+                                              text: "${item.teamInnings!.first.totalOvers}",
                                               style: fontMedium.copyWith(
                                                   fontSize: 13.sp,
                                                   color: const Color(0xff444444)
                                               )),
                                         ])),
                                         SizedBox(width: 1.w,),
-                                        SvgPicture.asset(Images.batIcon,width: 5.w,),
+                                        (item.teams!.currentInnings==1)?SvgPicture.asset(Images.batIcon,width: 5.w,):Text(''),
                                       ],
                                     ),
                                   ),
@@ -127,15 +126,60 @@ class _TeamLiveMatchesState extends State<TeamLiveMatches> {
                                       children: [
                                         Image.asset(Images.teamblogo,width: 10.w,fit: BoxFit.fill,),
                                         SizedBox(width: 2.w,),
-                                        Text("DCC", style: fontMedium.copyWith(
+                                        Text("${item.teams!.team2Name}", style: fontMedium.copyWith(
                                           fontSize: 13.sp,
                                           color:const Color(0xff555555),
                                         ),),
                                         SizedBox(width: 2.w,),
-                                        Text("Yet to bat", style: fontRegular.copyWith(
+                                        (item.teams!.currentInnings==1)?Text("Yet to bat", style: fontRegular.copyWith(
                                           fontSize: 12.sp,
                                           color:const Color(0xff666666),
-                                        ),),
+                                        ),):Row(children:[
+                                          RichText(
+                                              text: TextSpan(children: [
+                                                TextSpan(
+                                                    text: "${item.teamInnings![1].totalScore}",
+                                                    style: fontMedium.copyWith(
+                                                      fontSize: 13.sp,
+                                                      color: AppColor.pri,
+                                                    )),
+                                                TextSpan(
+                                                    text: "/",
+                                                    style: fontMedium.copyWith(
+                                                        fontSize: 13.sp,
+                                                        color: AppColor.pri
+                                                    )),
+                                                TextSpan(
+                                                    text: "${item.teamInnings![1].totalWickets}",
+                                                    style: fontMedium.copyWith(
+                                                        fontSize: 13.sp,
+                                                        color: AppColor.pri
+                                                    )),
+                                              ])),
+                                          SizedBox(width: 2.w,),
+                                          RichText(text: TextSpan(children: [
+                                            TextSpan(
+                                                text: "${item.teamInnings![1].currOvers}",
+                                                style: fontMedium.copyWith(
+                                                    fontSize: 13.sp,
+                                                    color: const Color(0xff444444)
+                                                )),
+                                            TextSpan(
+                                                text: "/",
+                                                style: fontMedium.copyWith(
+                                                    fontSize: 13.sp,
+                                                    color: const Color(0xff444444)
+                                                )),
+                                            TextSpan(
+                                                text: "${item.teamInnings![1].totalOvers}",
+                                                style: fontMedium.copyWith(
+                                                    fontSize: 13.sp,
+                                                    color: const Color(0xff444444)
+                                                )),
+                                          ])),
+                                          SizedBox(width: 1.w,),
+                                          SvgPicture.asset(Images.batIcon,width: 5.w,),
+                                        ]),
                                       ],
                                     ),
                                   ),
@@ -189,9 +233,9 @@ class _TeamLiveMatchesState extends State<TeamLiveMatches> {
                     ),
                   ],
                 ),
-              );
-            }),
-      ),
+              ),
+            );
+          }),
     );
   }
 }

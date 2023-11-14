@@ -3,10 +3,10 @@ import 'package:flutter_svg/svg.dart';
 import 'package:scoring_app/homescreens/playerdetailviewscreen/player_info_screen.dart';
 import 'package:scoring_app/homescreens/playerdetailviewscreen/player_matches_list.dart';
 import 'package:scoring_app/homescreens/playerdetailviewscreen/player_stats_screen.dart';
+import 'package:scoring_app/homescreens/playerdetailviewscreen/players_team_list.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../models/players/players_overview_model.dart';
-import '../../morescreens/teams_list_screen.dart';
 import '../../provider/player_details_provider.dart';
 import '../../utils/colours.dart';
 import '../../utils/images.dart';
