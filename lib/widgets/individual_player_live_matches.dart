@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:scoring_app/models/players/player_matches_model.dart';
 import 'package:sizer/sizer.dart';
 
+import '../homescreens/liveviewscreens/live_screen_home.dart';
 import '../utils/colours.dart';
 import '../utils/images.dart';
 import '../utils/sizes.dart';
@@ -29,7 +30,12 @@ class _IndividualPlayerLiveMatchesState extends State<IndividualPlayerLiveMatche
       );
     }
     return GestureDetector(onTap: (){
-    //  Navigator.push(context, MaterialPageRoute(builder: (context)=> TeamMatchesLiveView(widget.teams!.matchId!.toString(),widget.teams!.team1Id!.toString(),widget.teams!.team2Id!.toString())));
+
+      if(widget.teams!.currentInnings==1){
+        Navigator.push(context, MaterialPageRoute(builder: (context) => LiveScreenHome(widget.teams!.matchId.toString(),widget.teams!.team1Id.toString())));
+      }else{
+        Navigator.push(context, MaterialPageRoute(builder: (context) => LiveScreenHome(widget.teams!.matchId.toString(),widget.teams!.team2Id.toString())));
+      }
     },
       child: Padding(
         padding:  EdgeInsets.symmetric(horizontal: 3.w),

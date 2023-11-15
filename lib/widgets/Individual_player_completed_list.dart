@@ -18,8 +18,12 @@ class IndividualPlayerCompletedMatches extends StatefulWidget {
 }
 
 class _IndividualPlayerCompletedMatchesState extends State<IndividualPlayerCompletedMatches> {
+
   @override
   Widget build(BuildContext context) {
+    if(widget.teams==null ||widget.teamInnings!.isEmpty){
+      return const Center(child: Text('No match data found'));
+    }
     return GestureDetector(onTap: (){
       //Navigator.push(context, MaterialPageRoute(builder: (context)=>TeamMatchesCompletedView(widget.teams!.matchId.toString(), widget.teams!.team1Id.toString(), widget.teams!.team2Id.toString())));
     },
