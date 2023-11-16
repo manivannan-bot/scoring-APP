@@ -48,7 +48,7 @@ class _LiveScreenHomeState extends State<LiveScreenHome>with SingleTickerProvide
             bowlTeamId = value.matches!.team1Id;
             batTeamId = value.matches!.team2Id;
           }
-        }else if(value.matches!.currentInnings==2){
+        }else if(value.matches!.currentInnings==2 || value.matches!.currentInnings==3){
           if (value.matches!.team1Id == value.matches!.tossWonBy &&
               value.matches!.choseTo == "Bat") {
              bowlTeamId= value.matches!.team1Id;

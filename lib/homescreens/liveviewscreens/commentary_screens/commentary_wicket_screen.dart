@@ -81,7 +81,7 @@ class _CommentaryWicketScreenState extends State<CommentaryWicketScreen> {
                                     color: AppColor.blackColour,
                                   )),
                               TextSpan(
-                                  text: " ${item.overNumber}",
+                                  text: " ${(item.overNumber??0)+1}",
                                   style: fontMedium.copyWith(
                                     fontSize: 14.sp,
                                     color: AppColor.blackColour,

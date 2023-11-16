@@ -72,7 +72,7 @@ class _ScorecardScreenState extends State<ScorecardScreen>with SingleTickerProvi
         });
       }
     });
-    if(widget.currentInning == "2"){
+    if(widget.currentInning == "2" || widget.currentInning=='3'){
       setState(() {
         bowlTeamId = int.parse(widget.team1Id);
       });
@@ -80,7 +80,7 @@ class _ScorecardScreenState extends State<ScorecardScreen>with SingleTickerProvi
         setState(() {
           scoreCardResponseModel=value;
         });
-        if(widget.currentInning=='2'){
+        if(widget.currentInning=='2' || widget.currentInning=='3'){
           ScoringProvider().getScoreCard(widget.matchId, widget.team1Id).then((value) {
             setState(() {
               scoreCardResponseModel1=value;
@@ -96,7 +96,7 @@ class _ScorecardScreenState extends State<ScorecardScreen>with SingleTickerProvi
         setState(() {
           scoreCardResponseModel=value;
         });
-        if(widget.currentInning=='2'){
+        if(widget.currentInning=='2' || widget.currentInning=='3'){
           ScoringProvider().getScoreCard(widget.matchId, widget.team2Id).then((value) {
             setState(() {
               scoreCardResponseModel1=value;
@@ -163,7 +163,7 @@ class _ScorecardScreenState extends State<ScorecardScreen>with SingleTickerProvi
                       fontSize: 10.sp,
                       color: AppColor.lightColor,
                     ),),
-                    SizedBox(width: 40.w,),
+                    SizedBox(width: 30.w,),
                     Text("Target: ${TARGET??'-'}",style: fontMedium.copyWith(
                       fontSize: 10.sp,
                       color: AppColor.lightColor,
