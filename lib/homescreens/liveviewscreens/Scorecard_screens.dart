@@ -123,19 +123,23 @@ class _ScorecardScreenState extends State<ScorecardScreen>with SingleTickerProvi
     }
     if(scoreCardResponseModel!=null){
       teams= scoreCardResponseModel!.data!.teamsName;
-      if(scoreCardResponseModel!.data!.currRunRate!=null){
-        CRR=scoreCardResponseModel!.data!.currRunRate!.runRate;
-        RRR=scoreCardResponseModel!.data!.currRunRate!.reqRunRate;
-        TARGET=scoreCardResponseModel!.data!.currRunRate!.targetScore;
-        if(tabController.index==1){
-          setState(() {
-            CRR=scoreCardResponseModel1!.data!.currRunRate!.runRate;
-            RRR=scoreCardResponseModel1!.data!.currRunRate!.reqRunRate;
-          });
-
-        }
-
-      }
+                  if(scoreCardResponseModel!.data!.currRunRate!=null ){
+                    CRR=scoreCardResponseModel!.data!.currRunRate!.runRate;
+                    if(widget.currentInning=='2' || widget.currentInning=='3'){
+                      CRR=0;
+                    }
+                    // RRR=scoreCardResponseModel!.data!.currRunRate!.reqRunRate;
+                    // TARGET=scoreCardResponseModel!.data!.currRunRate!.targetScore;
+                  }
+                if(scoreCardResponseModel1!=null) {
+                  if (scoreCardResponseModel1!.data != null) {
+                    CRR = scoreCardResponseModel1!.data!.currRunRate!.runRate;
+                    RRR =
+                        scoreCardResponseModel1!.data!.currRunRate!.reqRunRate;
+                    TARGET =
+                        scoreCardResponseModel1!.data!.currRunRate!.targetScore;
+                  }
+                }
     }
 
     return Container(

@@ -44,7 +44,7 @@ class _CommentryOversState extends State<CommentryOvers> {
             backgroundColor: Colors.white,
           )));
     }
-    if(commentaryOversModel!.data!.isEmpty){
+    if(commentaryOversModel!.data==null){
       return const Center(child: Text('No data found'));
     }
     return Padding(

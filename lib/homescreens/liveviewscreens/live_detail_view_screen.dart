@@ -31,10 +31,7 @@ class _LiveDetailViewScreenState extends State<LiveDetailViewScreen> {
       });
     });
   }
-  final List<Map<String, dynamic>> itemList = [
-    {},
-    {},
-  ];
+
   @override
   Widget build(BuildContext context) {
     if(liveScoreCardModel==null){
