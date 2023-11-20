@@ -58,6 +58,8 @@ dependencies:
 #  firebase_database: ^10.3.2
   flutter_animator: ^3.2.2
   fluttertoast: ^8.2.2
+  laravel_flutter_pusher: ^0.0.4
+
 
 dev_dependencies:
   flutter_test:

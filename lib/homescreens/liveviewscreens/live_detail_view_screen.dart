@@ -2,6 +2,7 @@ import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dash/flutter_dash.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:laravel_flutter_pusher/laravel_flutter_pusher.dart';
 import 'package:scoring_app/provider/matches_list_provider.dart';
 import 'package:sizer/sizer.dart';
 
@@ -22,6 +23,7 @@ final String matchId;
 
 class _LiveDetailViewScreenState extends State<LiveDetailViewScreen> {
   LiveScoreCardModel? liveScoreCardModel;
+  String eventData='No data found';
   @override
   void initState() {
     super.initState();
@@ -29,6 +31,27 @@ class _LiveDetailViewScreenState extends State<LiveDetailViewScreen> {
       setState(() {
         liveScoreCardModel=value;
       });
+    });
+
+    setUpServices();
+  }
+
+  void setUpServices() {
+    debugPrint('Service_Setup');
+    var options = PusherOptions(
+        host: '192.168.1.14', port: 443, encrypted: false, cluster: 'ap2');
+
+    LaravelFlutterPusher pusher =
+    LaravelFlutterPusher('42a33f4c49cee32fad68', options, enableLogging: true,onConnectionStateChange: (status){ print(status.currentState);});
+    pusher.subscribe('channel-view').bind('OrderShipped', (event){
+      setState(() {
+        eventData = 'Event Data: ${event?.toString()}';
+      });
+      debugPrint(eventData);
+
+    });
+    pusher.connect(onError: (error){
+      print(error);
     });
   }
 
@@ -84,6 +107,7 @@ class _LiveDetailViewScreenState extends State<LiveDetailViewScreen> {
           ):Text(''),
         ),
         SizedBox(height: 2.h,),
+        Text('$eventData'),
         Padding(
           padding:  EdgeInsets.symmetric(horizontal: 4.w),
           child: Row(
