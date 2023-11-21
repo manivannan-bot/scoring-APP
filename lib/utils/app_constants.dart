@@ -25,5 +25,8 @@ static const String playerInfo= '$baseUrl/player-info';
   static const String teamPlayers = '$baseUrl/team-players';
   static const String teamInfo = '$baseUrl/team-info';
 
+  static const String login = '$baseUrl/login';
+  static const String loginVerification = '$baseUrl/login-verification';
+
 }
 

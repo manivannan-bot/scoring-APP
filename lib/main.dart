@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:scoring_app/auth/splash_screen.dart';
 import 'package:sizer/sizer.dart';
 
 import 'homescreens/home_screen.dart';
@@ -26,7 +27,7 @@ class MyApp extends StatelessWidget {
         builder: (context, orientation, deviceType)  {
           return const MaterialApp(
             debugShowCheckedModeBanner: false,
-            home: HomeScreen(),
+            home: SplashScreen(),
           );
         }
     );

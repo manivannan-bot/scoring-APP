@@ -9,6 +9,7 @@ import 'package:sizer/sizer.dart';
 
 import '../utils/colours.dart';
 import '../utils/images.dart';
+import 'login_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -37,7 +38,8 @@ class _SplashScreenState extends State<SplashScreen> {
     } else{
       Timer(
           const Duration(seconds: 2), () async {
-        Navigator.pushNamed(context, 'login_screen');
+        Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen()));
+      //  Navigator.pushNamed(context, 'login_screen');
       }
       );
     }
