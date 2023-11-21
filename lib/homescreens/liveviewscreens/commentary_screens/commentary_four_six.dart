@@ -4,7 +4,9 @@ import 'package:sizer/sizer.dart';
 
 import '../../../models/commentary/commentary_four_six_model.dart';
 import '../../../utils/colours.dart';
+import '../../../utils/images.dart';
 import '../../../utils/sizes.dart';
+import '../../../widgets/four_six_widget.dart';
 
 
 class CommentaryFourSix extends StatefulWidget {
@@ -125,23 +127,50 @@ class _CommentaryFourSixState extends State<CommentaryFourSix> {
                         ),
                         Row(
                           children: [
-                            Container(
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                border: Border.all(
-                                  color: Color(0xffDEDEDE), // Specify the border color
-                                  width: 1.0, // Specify the border width
+                            if(item.runsScored==4)...[
+                              Container(
+                                height:6.h,
+                                width:10.w,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                    color: Color(0xffDEDEDE), // Specify the border color
+                                    width: 1.0, // Specify the border width
+                                  ),
                                 ),
+                                child: Image.asset(Images.four),
                               ),
-                              child: CircleAvatar(
-                                backgroundColor: Color(0xffFBFAF7),
-                                radius: 16,
-                                child: Text("${item.runsScored}",style:fontMedium.copyWith(
-                                  fontSize: 12.sp,
-                                  color: AppColor.blackColour,
-                                ),),
+                            ]else if(item.runsScored==6)...[
+                              Container(
+                                  height:6.h,
+                                  width:10.w,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                    color: Color(0xffDEDEDE), // Specify the border color
+                                    width: 1.0, // Specify the border width
+                                  ),
+                                ),
+                                child: Image.asset(Images.six)
                               ),
-                            ),
+                            ],
+                            // Container(
+                            //   decoration: BoxDecoration(
+                            //     shape: BoxShape.circle,
+                            //     border: Border.all(
+                            //       color: Color(0xffDEDEDE), // Specify the border color
+                            //       width: 1.0, // Specify the border width
+                            //     ),
+                            //   ),
+                            //   child: CircleAvatar(
+                            //     backgroundColor: Color(0xffFBFAF7),
+                            //     radius: 16,
+                            //     child: Text("${item.runsScored}",style:fontMedium.copyWith(
+                            //       fontSize: 12.sp,
+                            //       color: AppColor.blackColour,
+                            //     ),),
+                            //   ),
+                            // ),
                             SizedBox(
                               width: 5.w,
                             ),
