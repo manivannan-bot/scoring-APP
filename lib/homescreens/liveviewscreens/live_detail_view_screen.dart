@@ -424,4 +424,5 @@ class _LiveDetailViewScreenState extends State<LiveDetailViewScreen> {
       ],
     );
   }
+
 }

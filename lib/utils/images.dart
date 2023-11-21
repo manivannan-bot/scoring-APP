@@ -66,7 +66,17 @@ class Images{
    static const String moreBgImage = 'assets/images/more_image_bg.png';
    static const String editSymbolIcon = 'assets/images/edit_symbol_icon.svg';
    static const String teamImageGrid = 'assets/images/team_images_grid.png';
-  // static const String totalAmountBgImg = 'assets/images/total_amount_bg_img.svg';
+   static const String splashTop = 'assets/images/splash_top_art.svg';
+  static const String logo = 'assets/images/elevens_logo.png';
+  static const String authCurveImg = 'assets/images/auth_curve_img.svg';
+  static const String loginTopImg = 'assets/images/login_top_img.svg';
+
+
+  static const String forgotPasswordImage = 'assets/images/forgot_password_img.svg';
+  static const String verifyMobileImage = 'assets/images/phone_verification_img.svg';
+  static const String otpImage = 'assets/images/otp_image.svg';
+
+// static const String totalAmountBgImg = 'assets/images/total_amount_bg_img.svg';
   //
   // static const String playVSPitchImg = 'assets/images/play_vs_pitch_image.png';
   // static const String playVSPitchShadeImg = 'assets/images/play_vs_pitch_shade_image.png';

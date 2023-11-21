@@ -61,7 +61,6 @@ class _LiveScreenState extends State<LiveScreen> {
                 Navigator.push(context, MaterialPageRoute(builder: (context) =>
                     LiveScreenHome(item.matchId.toString(),item.team2Id.toString())));
               }
-
             },
             child: Padding(
               padding:  EdgeInsets.symmetric(horizontal: 3.w),
