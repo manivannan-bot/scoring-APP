@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:scoring_app/auth/enter_otp.dart';
 import 'package:scoring_app/auth/login_screen.dart';
 import 'package:scoring_app/auth/splash_screen.dart';
+import 'package:scoring_app/homescreens/summary/completed_screen_view.dart';
 import 'package:scoring_app/homescreens/upcoming_screens.dart';
 import 'package:sizer/sizer.dart';
 
@@ -88,7 +89,7 @@ class _HomeScreenState extends State<HomeScreen>with SingleTickerProviderStateMi
                              //Navigator.push(context, MaterialPageRoute(builder: (context) => RegisterScreen()));
                             //Navigator.push(context, MaterialPageRoute(builder: (context) => VerifyMobileNumber()));
                             //Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen()));
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => EnterOtpScreen(true,true , '', '', '', true)));
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => CompletedScreenView()));
                           },
                           child: RichText(
                               text: TextSpan(children: [

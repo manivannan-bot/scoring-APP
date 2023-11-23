@@ -1,8 +1,8 @@
 class AppConstants {
 
-  static const String baseUrl = "https://11storm.stagin.xyz/api";
+ //static const String baseUrl = "https://11storm.stagin.xyz/api";
 
-  //static const String baseUrl = 'https://app.strange-noyce.139-59-13-7.plesk.page/api';
+  static const String baseUrl = 'https://app.strange-noyce.139-59-13-7.plesk.page/api';
    static const String livematches = '$baseUrl/scoring/live-matches';
    static const String finishedMatches = '$baseUrl/scoring/completed-matches';
    static const String scoreCardDetails = '$baseUrl/scoring/scorecard-live';
