@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:scoring_app/homescreens/summary/summary_first_inn_screen.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../utils/colours.dart';
@@ -61,12 +62,13 @@ class _SummaryScreenState extends State<SummaryScreen>with SingleTickerProviderS
                 ),
               ]
           ),
+          
           SizedBox(height: 1.h,),
           Expanded(
             child: TabBarView(
                 controller: tabController,
                 children:  [
-                  Container(),
+                  SummaryFirstInnScreen(),
                   Container(),
                 ]
                 ),

@@ -16,8 +16,6 @@ class _ForYouMatchesState extends State<ForYouMatches> {
  final List<Map<String, dynamic >> itemList = [
     {
       'type': 'live',
-
-
     },
     {
       'type': 'upcoming',
@@ -46,7 +44,6 @@ class _ForYouMatchesState extends State<ForYouMatches> {
           } else if (item['type']=='upcoming') {
             return IndividualPlayerUpcomingMatches();
           }
-
         });
   }
 }

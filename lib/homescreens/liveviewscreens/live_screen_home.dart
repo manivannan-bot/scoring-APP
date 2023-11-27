@@ -196,25 +196,46 @@ class _LiveScreenHomeState extends State<LiveScreenHome>with SingleTickerProvide
               ],
             ),
             SizedBox(height: 1.h,),
-            Padding(
-              padding:  EdgeInsets.only(bottom: 2.h,),
-              child: TabBar(
-                  unselectedLabelColor: AppColor.unselectedTabColor,
-                  labelColor:  const Color(0xffD78108),
-                  indicatorColor: const Color(0xffD78108),
-                  isScrollable: true,
-                  indicatorWeight: 2.0,
-                  labelPadding: EdgeInsets.symmetric(vertical: 0.4.h, horizontal: 3.5.w),
-                  indicatorSize: TabBarIndicatorSize.tab,
-                  controller: tabController,
-                  tabs: [
-                    Text('Live',style: fontRegular.copyWith(fontSize: 12.sp,),),
-                    Text('Score Card',style: fontRegular.copyWith(fontSize: 12.sp,),),
-                    Text('Commentary',style: fontRegular.copyWith(fontSize: 12.sp,),),
-                    Text('Info',style: fontRegular.copyWith(fontSize: 12.sp,),),
-                  ]
-              ),
+            TabBar(
+                unselectedLabelColor: AppColor.unselectedTabColor,
+                labelColor:  const Color(0xffD78108),
+                indicatorColor: const Color(0xffD78108),
+                isScrollable: true,
+                indicatorWeight: 2.0,
+                indicatorSize: TabBarIndicatorSize.tab,
+                labelStyle: fontMedium.copyWith(
+                    fontSize: 12.sp
+                ),
+                unselectedLabelStyle: fontRegular.copyWith(
+                    fontSize: 12.sp
+                ),
+                controller: tabController,
+                tabs: [
+                  Tab(
+                    text: "Live",
+                  ),
+                  Tab(
+                    text: "Score Card",
+                  ),
+                  Tab(
+                    text: "Commentary",
+                  ),
+                  Tab(
+                    text: "Info",
+                  ),
+                ]
             ),
+            Theme(
+                data: ThemeData(
+                  dividerTheme: const DividerThemeData(
+                    space: 0, // Set space to 0 to remove top and bottom padding
+                    thickness: 0.5, // Set thickness to desired value
+                    indent: 0, // Set indent to desired value
+                    endIndent: 0, // Set endIndent to desired value
+                  ),
+                ),
+                child: const Divider()),
+            SizedBox(height: 2.h,),
             Expanded(
               child: TabBarView(
                   controller: tabController,

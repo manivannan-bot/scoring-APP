@@ -15,6 +15,7 @@ class AppColor {
   static const Color imageBorderColor = Color(0xffFFFBE0);
   static const Color datePickerColor = Color(0xffE8A514);
   static const Color redColor = Color(0xffC2151C);
+  static const Color mainBgColor = Color(0xffF8F9FA);
 
   static const Color availableSlot = Color(0xff60B581);
   static const Color selectedSlot = Color(0xffFFBF36);

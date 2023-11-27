@@ -9,7 +9,6 @@ import '../models/homescreen/live_matches_model.dart';
 import '../utils/colours.dart';
 import '../utils/images.dart';
 import '../utils/sizes.dart';
-import '../widgets/do_scoring_btn.dart';
 import 'liveviewscreens/live_screen_home.dart';
 
 class LiveScreen extends StatefulWidget {
@@ -26,21 +25,21 @@ class _LiveScreenState extends State<LiveScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    apireq();
+    getMatchInfo();
   }
 
-
-  apireq(){
+  getMatchInfo(){
     MatchListProvider().getMatchInfo().then((value) {
       setState(() {
         liveMatchesModel=value;
       });
     });
   }
+
   @override
   Widget build(BuildContext context) {
     if(liveMatchesModel==null || liveMatchesModel!.matches!.isEmpty){
-      return Center(child: CircularProgressIndicator(),);
+      return const Center(child: CircularProgressIndicator(),);
     }
     return (liveMatchesModel!.matches!.isNotEmpty)?ListView.separated(
         physics: const BouncingScrollPhysics(),
@@ -63,7 +62,7 @@ class _LiveScreenState extends State<LiveScreen> {
               }
             },
             child: Padding(
-              padding:  EdgeInsets.symmetric(horizontal: 3.w),
+              padding:  EdgeInsets.symmetric(horizontal: 5.w),
               child: Column(
                 children: [
                   Container(
@@ -81,16 +80,16 @@ class _LiveScreenState extends State<LiveScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Padding(
-                                  padding:  EdgeInsets.only(left: 2.w,top: 1.h),
+                                  padding:  EdgeInsets.only(left: 3.w,top: 1.5.h),
                                   child: Row(
                                     children: [
-                                      Image.asset(Images.teamaLogo,width: 10.w,),
-                                      SizedBox(width: 2.w,),
+                                      Image.asset(Images.teamaLogo,width: 9.w,),
+                                      SizedBox(width: 3.w,),
                                       Text(
-                                          "${item!.team1Name}",
+                                          "${item.team1Name}",
                                           style: fontMedium.copyWith(
                                             fontSize: 13.sp,
-                                            color: AppColor.pri,
+                                            color: AppColor.blackColour,
                                           )
                                       ),
                                       SizedBox(width: 2.w,),
@@ -110,7 +109,6 @@ class _LiveScreenState extends State<LiveScreen> {
                                                 )),
                                             TextSpan(
                                                  text:"${item.teams!.first.totalWickets}",
-                                                 // ("${matchList![index].teams!.first.totalWickets??''}"),
                                                 style: fontMedium.copyWith(
                                                     fontSize: 13.sp,
                                                     color: AppColor.pri
@@ -120,50 +118,43 @@ class _LiveScreenState extends State<LiveScreen> {
                                       RichText(text: TextSpan(children: [
                                         TextSpan(
                                           text:"${item.teams!.first.currentOverDetails}",
-                                            // text: ("${matchList![index].teams!.first.overNumber??''}.${matchList![index].teams!.first.ballNumber??''}"),
                                             style: fontMedium.copyWith(
-                                                fontSize: 13.sp,
+                                                fontSize: 11.5.sp,
                                                 color: const Color(0xff444444)
                                             )),
                                         TextSpan(
                                             text: "/",
                                             style: fontMedium.copyWith(
-                                                fontSize: 13.sp,
+                                                fontSize: 11.5.sp,
                                                 color: const Color(0xff444444)
                                             )),
                                         TextSpan(
                                             text:"${item.overs}",
-                                            // text: matchList![index].overs,
                                             style: fontMedium.copyWith(
-                                                fontSize: 13.sp,
+                                                fontSize: 11.5.sp,
                                                 color: const Color(0xff444444)
                                             )),
                                       ])),
                                       SizedBox(width: 1.w,),
-                                      (item!.currentInnings==1)?SvgPicture.asset(Images.batIcon,width: 5.w,):Text(""),
-                                      // if(matchList![index].currentInnings==1)...[
-                                      //   SvgPicture.asset(Images.batIcon,width: 5.w,)
-                                      // ] else ...[
-                                      //   const SizedBox()
-                                      // ],
+                                      (item.currentInnings==1)?SvgPicture.asset(Images.batIcon,width: 3.5.w,):const SizedBox(),
                                     ],
                                   ),
                                 ),
                                 Padding(
-                                  padding: EdgeInsets.only(left: 2.w,top: 1.h),
+                                  padding: EdgeInsets.only(left: 3.w,top: 1.5.h),
                                   child: Row(
                                     children: [
-                                      Image.asset(Images.teamblogo,width: 10.w,fit: BoxFit.fill,),
-                                      SizedBox(width: 2.w,),
+                                      Image.asset(Images.teamblogo,width: 9.w,fit: BoxFit.cover,),
+                                      SizedBox(width: 3.w,),
                                       Text(
-                                          "${item!.team2Name}",
+                                          "${item.team2Name}",
                                           style: fontMedium.copyWith(
                                             fontSize: 13.sp,
-                                            color: AppColor.pri,
+                                            color: AppColor.blackColour,
                                           )
                                       ),
                                       SizedBox(width: 2.w,),
-                                      (item!.currentInnings==1)?Text("Yet to bat", style: fontRegular.copyWith(
+                                      (item.currentInnings==1)?Text("Yet to bat", style: fontRegular.copyWith(
                                         fontSize: 12.sp,
                                         color:const Color(0xff666666),
                                       ),):Row(
@@ -194,27 +185,26 @@ class _LiveScreenState extends State<LiveScreen> {
                                           RichText(text: TextSpan(children: [
                                             TextSpan(
                                                 text:"${item.teams![1].currentOverDetails}",
-                                                // text: ("${matchList![index].teams!.first.overNumber??''}.${matchList![index].teams!.first.ballNumber??''}"),
                                                 style: fontMedium.copyWith(
-                                                    fontSize: 13.sp,
+                                                    fontSize: 11.5.sp,
                                                     color: const Color(0xff444444)
                                                 )),
                                             TextSpan(
                                                 text: "/",
                                                 style: fontMedium.copyWith(
-                                                    fontSize: 13.sp,
+                                                    fontSize: 11.5.sp,
                                                     color: const Color(0xff444444)
                                                 )),
                                             TextSpan(
                                                 text:"${item.overs}",
                                                 // text: matchList![index].overs,
                                                 style: fontMedium.copyWith(
-                                                    fontSize: 13.sp,
+                                                    fontSize: 11.5.sp,
                                                     color: const Color(0xff444444)
                                                 )),
                                           ])),
                                           SizedBox(width: 1.w,),
-                                          SvgPicture.asset(Images.batIcon,width: 5.w,),
+                                          SvgPicture.asset(Images.batIcon,width: 3.8.w,),
                                         ],
                                       ),
                                     ],
@@ -239,8 +229,8 @@ class _LiveScreenState extends State<LiveScreen> {
                             ),
                             Container(
                               padding: EdgeInsets.symmetric(
-                                  horizontal: 5.w,
-                                  vertical: 0.8.h
+                                  horizontal: 3.w,
+                                  vertical: 0.5.h
                               ),
                               decoration:  BoxDecoration(
                                   color: AppColor.primaryColor,
@@ -248,12 +238,12 @@ class _LiveScreenState extends State<LiveScreen> {
                               ),
                               child: Row(
                                 children: [
-                                  SvgPicture.asset(Images.liveIcon,width: 2.5.w,),
+                                  SvgPicture.asset(Images.liveIcon,width: 2.2.w,),
                                   SizedBox(
                                     width: 2.w,
                                   ),
-                                  Text("Live",style: fontRegular.copyWith(
-                                    fontSize: 10.5.sp,
+                                  Text("Live",style: fontMedium.copyWith(
+                                    fontSize: 9.5.sp,
                                     color: const Color(0xff444444),
                                   ),)
                                 ],
@@ -271,11 +261,11 @@ class _LiveScreenState extends State<LiveScreen> {
                         SizedBox(height: 1.h,),
                         //toss line
                         Padding(
-                          padding:  EdgeInsets.only(left: 2.w,bottom: 1.h),
+                          padding:  EdgeInsets.only(left: 3.w,bottom: 1.5.h,right: 3.w),
                           child: Text(
                             "${item!.tossWinnerName} won the toss choose to ${item!.choseTo}"
                             ,style: fontRegular.copyWith(
-                              fontSize: 12.sp,
+                              fontSize: 11.sp,
                               color: AppColor.pri
                           ),),
                           // child: Text('${matchList![index].tossWinnerName} won the toss choose to ${matchList![index].choseTo}',style: fontRegular.copyWith(
@@ -290,6 +280,6 @@ class _LiveScreenState extends State<LiveScreen> {
               ),
             ),
           );
-        }):Text(' No matches found');
+        }):const Text(' No matches found');
   }
 }

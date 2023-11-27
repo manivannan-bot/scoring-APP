@@ -2,9 +2,7 @@ class PlayerMatchesModel {
   bool? status;
   String? message;
   List<Data>? data;
-
   PlayerMatchesModel({this.status, this.message, this.data});
-
   PlayerMatchesModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
@@ -15,7 +13,6 @@ class PlayerMatchesModel {
       });
     }
   }
-
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['status'] = this.status;
@@ -26,13 +23,10 @@ class PlayerMatchesModel {
     return data;
   }
 }
-
 class Data {
   Teams? teams;
   List<TeamInnings>? teamInnings;
-
   Data({this.teams, this.teamInnings});
-
   Data.fromJson(Map<String, dynamic> json) {
     teams = json['teams'] != null ? new Teams.fromJson(json['teams']) : null;
     if (json['team_innings'] != null) {
@@ -42,7 +36,6 @@ class Data {
       });
     }
   }
-
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     if (this.teams != null) {
@@ -54,7 +47,6 @@ class Data {
     return data;
   }
 }
-
 class Teams {
   String? team1Name;
   String? team2Name;
@@ -65,7 +57,6 @@ class Teams {
   String? wonTeam;
   int? matchStatus;
   int? currentInnings;
-
   Teams(
       {this.team1Name,
         this.team2Name,
@@ -76,7 +67,6 @@ class Teams {
         this.wonTeam,
         this.matchStatus,
         this.currentInnings});
-
   Teams.fromJson(Map<String, dynamic> json) {
     team1Name = json['team1_name'];
     team2Name = json['team2_name'];
@@ -88,7 +78,6 @@ class Teams {
     matchStatus = json['match_status'];
     currentInnings = json['current_innings'];
   }
-
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['team1_name'] = this.team1Name;
@@ -103,23 +92,19 @@ class Teams {
     return data;
   }
 }
-
 class TeamInnings {
   int? totalScore;
   int? totalWickets;
   String? totalOvers;
   String? currOvers;
-
   TeamInnings(
       {this.totalScore, this.totalWickets, this.totalOvers, this.currOvers});
-
   TeamInnings.fromJson(Map<String, dynamic> json) {
     totalScore = json['total_score'];
     totalWickets = json['total_wickets'];
     totalOvers = json['total_overs'];
     currOvers = json['curr_overs'];
   }
-
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['total_score'] = this.totalScore;

@@ -2,12 +2,12 @@ import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:sizer/sizer.dart';
-
 import '../../models/ScoreCard/yet_to_bat.dart';
 import '../../provider/scoring_provider.dart';
 import '../../utils/colours.dart';
 import '../../utils/images.dart';
 import '../../utils/sizes.dart';
+
 
 
 
@@ -111,7 +111,7 @@ class _ScoreCardTwoState extends State<ScoreCardTwo> {
                                     color: const Color(0xff555555),
                                   ),),
                                 ],
-                              ):const Text(''),
+                              ):const SizedBox(),
                             ],
                           ),
 

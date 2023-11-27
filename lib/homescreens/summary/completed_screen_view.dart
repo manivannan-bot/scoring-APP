@@ -182,6 +182,10 @@ class _CompletedScreenViewState extends State<CompletedScreenView>with SingleTic
                 ]
             ),
           ),
+          Container(
+            height: 10.h,
+            color: AppColor.pri,
+          ),
           Expanded(
             child: TabBarView(
                 controller: tabController,

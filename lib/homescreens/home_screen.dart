@@ -4,7 +4,7 @@ import 'package:scoring_app/auth/enter_otp.dart';
 import 'package:scoring_app/auth/login_screen.dart';
 import 'package:scoring_app/auth/splash_screen.dart';
 import 'package:scoring_app/homescreens/summary/completed_screen_view.dart';
-import 'package:scoring_app/homescreens/upcoming_screens.dart';
+
 import 'package:sizer/sizer.dart';
 
 import '../auth/register_screen.dart';
@@ -34,12 +34,13 @@ class _HomeScreenState extends State<HomeScreen>with SingleTickerProviderStateMi
   void initState() {
     // TODO: implement initState
     super.initState();
-    tabController = TabController(length: 5, vsync: this);
+    tabController = TabController(length: 3, vsync: this);
   }
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        backgroundColor: AppColor.mainBgColor,
         body: Column(
           children: [
             Container(
@@ -60,22 +61,21 @@ class _HomeScreenState extends State<HomeScreen>with SingleTickerProviderStateMi
                         ClipOval(
                           child: Image.asset(
                             Images.splashBottom,
-                            width: 24.w,
+                            width: 20.w,
                           ),
                         ),
                         SizedBox(width: 4.w,),
-
                         GestureDetector(
                           onTap: (){
                           Navigator.push(context, MaterialPageRoute(builder: (context) => MoreScreen()));
                           },
-                          child: Text('Hello!\n prasanth',style: fontMedium.copyWith(
-                              fontSize: 15.sp,
+                          child: Text('Hello!\nPrasanth',style: fontMedium.copyWith(
+                              fontSize: 14.sp,
                               color: AppColor.lightColor
                           ),),
                         ),
                         Spacer(),
-                        SvgPicture.asset(Images.notificationIcon,color: AppColor.lightColor,)
+                        SvgPicture.asset(Images.notificationIcon,color: AppColor.lightColor,width: 5.w,)
                       ],
                     ),
                     SizedBox(height: 2.h,),
@@ -96,13 +96,13 @@ class _HomeScreenState extends State<HomeScreen>with SingleTickerProviderStateMi
                                 TextSpan(
                                     text: ("Chrompet,"),
                                     style: fontRegular.copyWith(
-                                      fontSize: 12.sp,
+                                      fontSize: 10.5.sp,
                                       color: AppColor.lightColor,
                                     )),
                                 TextSpan(
-                                    text: "Chennai 600210",
+                                    text: " Chennai 600210",
                                     style: fontRegular.copyWith(
-                                        fontSize: 12.sp,
+                                        fontSize: 10.5.sp,
                                         color: AppColor.lightColor
                                     )),
                               ])),
@@ -115,30 +115,51 @@ class _HomeScreenState extends State<HomeScreen>with SingleTickerProviderStateMi
             ),
             SizedBox(height: 1.h,),
             TabBar(
+              indicatorSize: TabBarIndicatorSize.label,
               unselectedLabelColor: AppColor.unselectedTabColor,
               labelColor:  const Color(0xffD78108),
               indicatorColor: const Color(0xffD78108),
               isScrollable: true,
               controller: tabController,
-              indicatorWeight: 4.0, // Set the indicator weight
+              indicatorWeight: 2.0,
+              labelStyle: fontMedium.copyWith(
+                  fontSize: 12.sp
+              ),
+              unselectedLabelStyle: fontRegular.copyWith(
+                  fontSize: 12.sp
+              ),
+              // labelPadding: EdgeInsets.only(bottom: 0.5.h),// Set the indicator weight
               tabs: [
-                Text('Live',style: fontRegular.copyWith(fontSize: 12.sp,),),
-                Text('Upcoming',style: fontRegular.copyWith(fontSize: 12.sp,),),
-                Text('Finished',style: fontRegular.copyWith(fontSize: 12.sp,),),
-                Text('For you',style: fontRegular.copyWith(fontSize: 12.sp,),),
-                Text('My matches',style: fontRegular.copyWith(fontSize: 12.sp,),),
+                Tab(
+                  text: "Live",
+                ),
+                Tab(
+                  text: "Finished",
+                ),
+                Tab(
+                  text: "For you",
+                ),
               ],
             ),
-            const Divider(),
+            Theme(
+                data: ThemeData(
+                  dividerTheme: const DividerThemeData(
+                    space: 0, // Set space to 0 to remove top and bottom padding
+                    thickness: 0.5, // Set thickness to desired value
+                    indent: 0, // Set indent to desired value
+                    endIndent: 0, // Set endIndent to desired value
+                  ),
+                ),
+                child: const Divider()),
+            SizedBox(height: 2.h,),
             Expanded(
               child: TabBarView(
                   controller: tabController,
                   children: [
                     LiveScreen(),
-                    UpcomingScreen(),
                     CompletedScreen(),
                     ForYouMatches(),
-                    MymatchesHomeScreen(),
+                    // MymatchesHomeScreen(),
                   ]
               ),
             ),

@@ -39,16 +39,15 @@ class _LiveDetailViewScreenState extends State<LiveDetailViewScreen> {
   void setUpServices() {
     debugPrint('Service_Setup');
     var options = PusherOptions(
-        host: '192.168.1.14', port: 443, encrypted: false, cluster: 'ap2');
+        host: '64.227.139.48', port: 6001, encrypted: false, cluster: 'mt1');
 
     LaravelFlutterPusher pusher =
-    LaravelFlutterPusher('42a33f4c49cee32fad68', options, enableLogging: true,onConnectionStateChange: (status){ print(status.currentState);});
-    pusher.subscribe('channel-view').bind('OrderShipped', (event){
+    LaravelFlutterPusher('app-key', options, enableLogging: true,onConnectionStateChange: (status){ print(status.currentState);});
+    pusher.subscribe('public.match.list').bind('.matches', (event){
       setState(() {
         eventData = 'Event Data: ${event?.toString()}';
       });
       debugPrint(eventData);
-
     });
     pusher.connect(onError: (error){
       print(error);
@@ -104,18 +103,18 @@ class _LiveDetailViewScreenState extends State<LiveDetailViewScreen> {
                 ),
               ) : Text('')
             ],
-          ):Text(''),
+          ) : const SizedBox(),
         ),
         SizedBox(height: 2.h,),
         Text('$eventData'),
         Padding(
-          padding:  EdgeInsets.symmetric(horizontal: 4.w),
+          padding:  EdgeInsets.symmetric(horizontal: 5.w),
           child: Row(
             children: [
               Text(
                 "Batting",
                 style: fontMedium.copyWith(
-                  fontSize: 14.sp,
+                  fontSize: 12.sp,
                   color: AppColor.blackColour,
                 ),
               ),
@@ -124,7 +123,7 @@ class _LiveDetailViewScreenState extends State<LiveDetailViewScreen> {
               ),
               SvgPicture.asset(
                 Images.batIcon,
-                width: 5.w,
+                width: 4.w,
               ),
             ],
           ),
@@ -133,7 +132,7 @@ class _LiveDetailViewScreenState extends State<LiveDetailViewScreen> {
           height: 2.h,
         ),
         Padding(
-          padding:  EdgeInsets.symmetric(horizontal: 4.w),
+          padding:  EdgeInsets.symmetric(horizontal: 5.w),
           child: Row(
             children: [
               SizedBox(
@@ -141,7 +140,7 @@ class _LiveDetailViewScreenState extends State<LiveDetailViewScreen> {
                 child: Text(
                   "Batsman",
                   style: fontRegular.copyWith(
-                    fontSize: 12.sp,
+                    fontSize: 11.sp,
                     color: AppColor.pri,
                   ),
                 ),
@@ -156,28 +155,28 @@ class _LiveDetailViewScreenState extends State<LiveDetailViewScreen> {
                     Text(
                       "R",
                       style: fontRegular.copyWith(
-                        fontSize: 12.sp,
+                        fontSize: 11.sp,
                         color: const Color(0xff777777),
                       ),
                     ),
                     Text(
                       "B",
                       style: fontRegular.copyWith(
-                        fontSize: 12.sp,
+                        fontSize: 11.sp,
                         color: const Color(0xff777777),
                       ),
                     ),
                     Text(
                       "4s",
                       style: fontRegular.copyWith(
-                        fontSize: 12.sp,
+                        fontSize: 11.sp,
                         color: const Color(0xff777777),
                       ),
                     ),
                     Text(
                       "6s",
                       style: fontRegular.copyWith(
-                        fontSize: 12.sp,
+                        fontSize: 11.sp,
                         color: const Color(0xff777777),
                       ),
                     ),
@@ -198,7 +197,7 @@ class _LiveDetailViewScreenState extends State<LiveDetailViewScreen> {
           color: Color(0xffD3D3D3),
         ),
         Padding(
-          padding:  EdgeInsets.symmetric(horizontal: 4.w),
+          padding:  EdgeInsets.symmetric(horizontal: 5.w),
           child: Expanded(
             child: MediaQuery.removePadding(
               context: context,
@@ -230,15 +229,12 @@ class _LiveDetailViewScreenState extends State<LiveDetailViewScreen> {
                                 children: [
                                   Text(
                                     "${item.playerName}",
-                                    // "${item.playerName}",
                              style: fontRegular.copyWith(
-                                    fontSize: 12.sp,
+                                    fontSize: 11.sp,
                                     color: AppColor.blackColour,
                                   ),),
                                   SizedBox(width: 1.w,),
-                                  // (item.isOut!=1)?
-                                  (item.stricker==1)?SvgPicture.asset(Images.batIcon,width: 4.w,color: AppColor.blackColour,):Text("")
-                                      // :Text(''),
+                                  (item.stricker==1)?SvgPicture.asset(Images.batIcon,width: 4.w,color: AppColor.blackColour,):const SizedBox()
                                 ],
                               ),
                               SizedBox(height: 0.5.h,),
@@ -248,7 +244,7 @@ class _LiveDetailViewScreenState extends State<LiveDetailViewScreen> {
                                         text:
                                             "Batting",
                                         style: fontRegular.copyWith(
-                                          fontSize: 11.sp,
+                                          fontSize: 9.sp,
                                           color: const Color(0xff777777),
                                         )),
                                     // TextSpan(
@@ -267,24 +263,24 @@ class _LiveDetailViewScreenState extends State<LiveDetailViewScreen> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              Text("${item.runsScored}",style: fontRegular.copyWith(
-                                fontSize: 12.sp,
-                                color: const Color(0xff777777),
+                              Text("${item.runsScored}",style: fontMedium.copyWith(
+                                fontSize: 11.sp,
+                                color:AppColor.blackColour,
                               ),),
                               Text("${item.ballsFaced}",style: fontRegular.copyWith(
-                                fontSize: 12.sp,
+                                fontSize: 11.sp,
                                 color: const Color(0xff777777),
                               ),),
                               Text("${item.fours}",style: fontRegular.copyWith(
-                                fontSize: 12.sp,
+                                fontSize: 11.sp,
                                 color: const Color(0xff777777),
                               ),),
                               Text("${item.sixes}",style: fontRegular.copyWith(
-                                fontSize: 12.sp,
+                                fontSize: 11.sp,
                                 color: const Color(0xff777777),
                               ),),
                               Text("${item.strikeRate}",style: fontRegular.copyWith(
-                                fontSize: 12.sp,
+                                fontSize: 11.sp,
                                 color: const Color(0xff777777),
                               ),),
                             ],
@@ -302,27 +298,27 @@ class _LiveDetailViewScreenState extends State<LiveDetailViewScreen> {
         SizedBox(height: 1.h,),
         //bowling
         Padding(
-          padding:  EdgeInsets.symmetric(horizontal: 4.w),
+          padding:  EdgeInsets.symmetric(horizontal: 5.w),
           child: Row(
             children: [
               Text("Bowling",style: fontMedium.copyWith(
-                fontSize: 14.sp,
+                fontSize: 12.sp,
                 color: AppColor.blackColour,
               ),),
               SizedBox(width: 1.w,),
-              SvgPicture.asset(Images.ballIcon,width: 5.w,),
+              SvgPicture.asset(Images.ballIcon,width: 4.w,),
             ],
           ),
         ),
         SizedBox(height: 1.h,),
         Padding(
-          padding:  EdgeInsets.symmetric(horizontal: 4.w),
+          padding:  EdgeInsets.symmetric(horizontal: 5.w),
           child: Row(
             children: [
               SizedBox(
                 width: 35.w,
                 child: Text("Bowler",style: fontRegular.copyWith(
-                  fontSize: 12.sp,
+                  fontSize: 11.sp,
                   color: AppColor.pri,
                 ),),
               ),
@@ -332,23 +328,23 @@ class _LiveDetailViewScreenState extends State<LiveDetailViewScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     Text("O",style: fontRegular.copyWith(
-                      fontSize: 12.sp,
+                      fontSize: 11.sp,
                       color: const Color(0xff777777),
                     ),),
                     Text("M",style: fontRegular.copyWith(
-                      fontSize: 12.sp,
+                      fontSize: 11.sp,
                       color: const Color(0xff777777),
                     ),),
                     Text("R",style: fontRegular.copyWith(
-                      fontSize: 12.sp,
+                      fontSize: 11.sp,
                       color: const Color(0xff777777),
                     ),),
                     Text("W",style: fontRegular.copyWith(
-                      fontSize: 12.sp,
+                      fontSize: 11.sp,
                       color: const Color(0xff777777),
                     ),),
                     Text("Eco",style: fontRegular.copyWith(
-                      fontSize: 12.sp,
+                      fontSize: 11.sp,
                       color: const Color(0xff777777),
                     ),),
                   ],
@@ -361,7 +357,7 @@ class _LiveDetailViewScreenState extends State<LiveDetailViewScreen> {
           color: Color(0xffD3D3D3),
         ),
         (liveScoreCardModel!.data!.bowling !=null)?Padding(
-          padding:  EdgeInsets.symmetric(horizontal: 4.w),
+          padding:  EdgeInsets.symmetric(horizontal: 5.w),
           child:Row(
             children: [
               SizedBox(
@@ -375,13 +371,11 @@ class _LiveDetailViewScreenState extends State<LiveDetailViewScreen> {
                           "${liveScoreCardModel!.data!.bowling!.playerName}",
                           // "${item.playerName}",
                           style: fontRegular.copyWith(
-                            fontSize: 12.sp,
+                            fontSize: 11.sp,
                             color: AppColor.blackColour,
                           ),),
                         SizedBox(width: 1.w,),
-                        // (item.isOut!=1)?
                         SvgPicture.asset(Images.ballBlackIcon,width: 4.w,color: AppColor.blackColour,)
-                        // :Text(''),
                       ],
                     ),
                     SizedBox(height: 0.5.h,),
@@ -396,23 +390,23 @@ class _LiveDetailViewScreenState extends State<LiveDetailViewScreen> {
                     Text(
                       "${liveScoreCardModel!.data!.bowling!.overBall}"
                       ,style: fontRegular.copyWith(
-                      fontSize: 12.sp,
+                      fontSize: 11.sp,
                       color: const Color(0xff777777),
                     ),),
                     Text( "${liveScoreCardModel!.data!.bowling!.maiden}",style: fontRegular.copyWith(
-                      fontSize: 12.sp,
+                      fontSize: 11.sp,
                       color: const Color(0xff777777),
                     ),),
                     Text( "${liveScoreCardModel!.data!.bowling!.runsConceded}",style: fontRegular.copyWith(
-                      fontSize: 12.sp,
+                      fontSize: 11.sp,
                       color: const Color(0xff777777),
                     ),),
                     Text( "${liveScoreCardModel!.data!.bowling!.wickets}",style: fontRegular.copyWith(
-                      fontSize: 12.sp,
+                      fontSize: 11.sp,
                       color: const Color(0xff777777),
                     ),),
                     Text( "${liveScoreCardModel!.data!.bowling!.economy}",style: fontRegular.copyWith(
-                      fontSize: 12.sp,
+                      fontSize: 11.sp,
                       color: const Color(0xff777777),
                     ),),
                   ],
