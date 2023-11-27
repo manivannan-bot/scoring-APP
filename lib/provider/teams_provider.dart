@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/teams/team_info_model.dart';
 import '../models/teams/team_matches_model.dart';
@@ -19,15 +20,15 @@ class TeamsProvider extends ChangeNotifier{
 
   Future<TeamOverview> getTeamOverview(String teamId) async {
 
-    // SharedPreferences preferences = await SharedPreferences.getInstance();
-    // String? accToken = preferences.getString("access_token");
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    String? accToken = preferences.getString("access_token");
     try {
       final response = await http.get(
         Uri.parse('${AppConstants.teamOverview}/$teamId'),
-        // headers: {
-        //   // 'Content-Type': 'application/json; charset=UTF-8',
-        //   // 'Authorization': 'Bearer $accToken',
-        // },
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer $accToken',
+        },
       );
       var decodedJson = json.decode(response.body);
       print(decodedJson);
@@ -52,15 +53,15 @@ class TeamsProvider extends ChangeNotifier{
 
   Future<TeamMatchesModel> getTeamMatches(String teamId) async {
 
-    // SharedPreferences preferences = await SharedPreferences.getInstance();
-    // String? accToken = preferences.getString("access_token");
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    String? accToken = preferences.getString("access_token");
     try {
       final response = await http.get(
         Uri.parse('${AppConstants.teamMatches}/$teamId'),
-        // headers: {
-        //   // 'Content-Type': 'application/json; charset=UTF-8',
-        //   // 'Authorization': 'Bearer $accToken',
-        // },
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer $accToken',
+        },
       );
       var decodedJson = json.decode(response.body);
       print(decodedJson);
@@ -85,15 +86,15 @@ class TeamsProvider extends ChangeNotifier{
 
   Future<TeamPlayersModel> getTeamPlayers(String teamId) async {
 
-    // SharedPreferences preferences = await SharedPreferences.getInstance();
-    // String? accToken = preferences.getString("access_token");
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    String? accToken = preferences.getString("access_token");
     try {
       final response = await http.get(
         Uri.parse('${AppConstants.teamPlayers}/$teamId'),
-        // headers: {
-        //   // 'Content-Type': 'application/json; charset=UTF-8',
-        //   // 'Authorization': 'Bearer $accToken',
-        // },
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer $accToken',
+        },
       );
       var decodedJson = json.decode(response.body);
       print(decodedJson);
@@ -118,15 +119,15 @@ class TeamsProvider extends ChangeNotifier{
 
   Future<TeamInfoModel> getTeamInfo(String teamId) async {
 
-    // SharedPreferences preferences = await SharedPreferences.getInstance();
-    // String? accToken = preferences.getString("access_token");
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    String? accToken = preferences.getString("access_token");
     try {
       final response = await http.get(
         Uri.parse('${AppConstants.teamInfo}/$teamId'),
-        // headers: {
-        //   // 'Content-Type': 'application/json; charset=UTF-8',
-        //   // 'Authorization': 'Bearer $accToken',
-        // },
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer $accToken',
+        },
       );
       var decodedJson = json.decode(response.body);
       print(decodedJson);

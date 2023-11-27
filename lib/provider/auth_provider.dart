@@ -61,7 +61,7 @@ class AuthProvider extends ChangeNotifier{
 
   Future<LoginOtpModel> loginOtpCheck(String otp, String userId) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-     //String? accToken = preferences.getString("access_token");
+
     var body = json.encode({
       "user_id":userId,
       "otp":otp,
@@ -81,7 +81,7 @@ class AuthProvider extends ChangeNotifier{
       print(decodedJson);
       if (response.statusCode == 200) {
         loginOtpModel = LoginOtpModel.fromJson(decodedJson);
-
+        preferences.setString("access_token",loginOtpModel.token!);
         notifyListeners();
       } else {
         throw const HttpException('Failed to load data');
@@ -102,7 +102,7 @@ class AuthProvider extends ChangeNotifier{
     var body = json.encode({
       "mobile_no":mobileNo,
       "name":name,
-      "role":1
+      "role":3
     });
     // SharedPreferences preferences = await SharedPreferences.getInstance();
     // String? accToken = preferences.getString("access_token");

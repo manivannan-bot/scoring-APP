@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:scoring_app/homescreens/liveviewscreens/Scorecard_screens.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../models/ScoreCard/score_card_response_model.dart';
 import '../models/ScoreCard/yet_to_bat.dart';
 import '../models/commentary/commentary_four_six_model.dart';
@@ -25,15 +26,15 @@ class ScoringProvider extends ChangeNotifier{
 
   Future<ScoreCardResponseModel> getScoreCard(String matchId,String teamId) async {
 
-    // SharedPreferences preferences = await SharedPreferences.getInstance();
-    // String? accToken = preferences.getString("access_token");
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    String? accToken = preferences.getString("access_token");
     try {
       final response = await http.get(
         Uri.parse('${AppConstants.scoreCardDetails}/$matchId/$teamId'),
-        // headers: {
-        //   // 'Content-Type': 'application/json; charset=UTF-8',
-        //   // 'Authorization': 'Bearer $accToken',
-        // },
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer $accToken',
+        },
       );
       var decodedJson = json.decode(response.body);
       print(decodedJson);
@@ -56,14 +57,15 @@ class ScoringProvider extends ChangeNotifier{
     return scoreCardResponseModel;
   }
   Future<ScoreCardYetTobat> playersYetToBat(String matchId,String teamId) async {
-
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    String? accToken = preferences.getString("access_token");
     try {
       final response = await http.get(
         Uri.parse('${AppConstants.yetTobat}/$matchId/$teamId'),
-        // headers: {
-        //   // 'Content-Type': 'application/json; charset=UTF-8',
-        //   // 'Authorization': 'Bearer $accToken',
-        // },
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer $accToken',
+        },
       );
       var decodedJson = json.decode(response.body);
       print(decodedJson);
@@ -88,15 +90,15 @@ class ScoringProvider extends ChangeNotifier{
 
   Future<CommentaryOversModel> getCommentaryOvers(String matchId,String teamId) async {
 
-    // SharedPreferences preferences = await SharedPreferences.getInstance();
-    // String? accToken = preferences.getString("access_token");
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    String? accToken = preferences.getString("access_token");
     try {
       final response = await http.get(
         Uri.parse('${AppConstants.commentaryOvers}/$matchId/$teamId'),
-        // headers: {
-        //   // 'Content-Type': 'application/json; charset=UTF-8',
-        //   // 'Authorization': 'Bearer $accToken',
-        // },
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer $accToken',
+        },
       );
       var decodedJson = json.decode(response.body);
       print(decodedJson);
@@ -120,15 +122,15 @@ class ScoringProvider extends ChangeNotifier{
   }
   Future<CommentaryWicketModel> getCommentaryWickets(String matchId,String teamId) async {
 
-    // SharedPreferences preferences = await SharedPreferences.getInstance();
-    // String? accToken = preferences.getString("access_token");
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    String? accToken = preferences.getString("access_token");
     try {
       final response = await http.get(
         Uri.parse('${AppConstants.commentaryWickets}/$matchId/$teamId'),
-        // headers: {
-        //   // 'Content-Type': 'application/json; charset=UTF-8',
-        //   // 'Authorization': 'Bearer $accToken',
-        // },
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer $accToken',
+        },
       );
       var decodedJson = json.decode(response.body);
       print(decodedJson);
@@ -153,15 +155,15 @@ class ScoringProvider extends ChangeNotifier{
 
   Future<CommentaryFourSixModel> getCommentaryFoursSixes(String matchId,String teamId) async {
 
-    // SharedPreferences preferences = await SharedPreferences.getInstance();
-    // String? accToken = preferences.getString("access_token");
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    String? accToken = preferences.getString("access_token");
     try {
       final response = await http.get(
         Uri.parse('${AppConstants.commentaryFoursSixes}/$matchId/$teamId'),
-        // headers: {
-        //   // 'Content-Type': 'application/json; charset=UTF-8',
-        //   // 'Authorization': 'Bearer $accToken',
-        // },
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer $accToken',
+        },
       );
       var decodedJson = json.decode(response.body);
       print(decodedJson);
@@ -186,15 +188,15 @@ class ScoringProvider extends ChangeNotifier{
 
   Future<MatchPlayersModel> getMatchPlayers(String matchId,String teamId) async {
 
-    // SharedPreferences preferences = await SharedPreferences.getInstance();
-    // String? accToken = preferences.getString("access_token");
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    String? accToken = preferences.getString("access_token");
     try {
       final response = await http.get(
         Uri.parse('${AppConstants.matchPlayers}/$matchId/$teamId'),
-        // headers: {
-        //   // 'Content-Type': 'application/json; charset=UTF-8',
-        //   // 'Authorization': 'Bearer $accToken',
-        // },
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer $accToken',
+        },
       );
       var decodedJson = json.decode(response.body);
       print(decodedJson);
