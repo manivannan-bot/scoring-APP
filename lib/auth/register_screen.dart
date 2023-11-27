@@ -388,7 +388,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ] else...[
                     Bounceable(
                         onTap:(){
-                         // validate();
+                          validate();
                         },
                         child: Padding(
                           padding: EdgeInsets.symmetric(horizontal: 5.w),
@@ -432,48 +432,48 @@ class _RegisterScreenState extends State<RegisterScreen> {
   //   await Permission.location.request();
   // }
 
-  // void validate() {
-  //   print(refCodeController.text);
-  //   if (_formKey.currentState!.validate()) {
-  //       setState(() {
-  //         loading = true;
-  //       });
-  //       if(hasValue && !isValid){
-  //         setState(() {
-  //           loading = false;
-  //         });
-  //         Dialogs.snackbar("Enter a valid email address", context, isError: true);
-  //       } else {
-  //         AuthProvider().register(nameController.text, emailController.text, mobileController.text, refCodeController.text)
-  //             .then((value) async {
-  //           if(value.status == true){
-  //             SharedPreferences preferences = await SharedPreferences.getInstance();
-  //             preferences.setString("user_temp_id", value.userTempId.toString());
-  //             preferences.setString("mobile", mobileController.text);
-  //             preferences.setString("otp", value.otp.toString());
-  //             preferences.setBool("isLoginScreen", false);
-  //             _requestLocationPermission();
-  //             if(mounted){
-  //               Navigator.push(context, ScaleRoute(page: EnterOtpScreen(false, true, value.otp.toString(), value.userTempId.toString(), mobileController.text, false)));
-  //             }
-  //             setState(() {
-  //               loading = false;
-  //             });
-  //             print("registration form submitted");
-  //             // Dialogs.snackbar(value.message.toString(), context, isError: false);
-  //           } else if(value.status == false){
-  //             print(value.message.toString());
-  //             Dialogs.snackbar(value.message.toString(), context, isError: true);
-  //             setState(() {
-  //               loading = false;
-  //             });
-  //           } else{
-  //             setState(() {
-  //               loading = false;
-  //             });
-  //           }
-  //         });
-  //       }
-  //   }
-  //   }
+  void validate() {
+    print(refCodeController.text);
+    if (_formKey.currentState!.validate()) {
+        setState(() {
+          loading = true;
+        });
+        if(hasValue && !isValid){
+          setState(() {
+            loading = false;
+          });
+          Dialogs.snackBar("Enter a valid email address", context, isError: true);
+        } else {
+          AuthProvider().register(nameController.text, emailController.text, mobileController.text)
+              .then((value) async {
+            if(value.status == true){
+              SharedPreferences preferences = await SharedPreferences.getInstance();
+              preferences.setString("user_temp_id", value.userTempId.toString());
+              preferences.setString("mobile", mobileController.text);
+              preferences.setString("otp", value.otp.toString());
+              preferences.setBool("isLoginScreen", false);
+              //_requestLocationPermission();
+              if(mounted){
+                Navigator.push(context, MaterialPageRoute(builder:(builder)=> EnterOtpScreen(false, true, value.otp.toString(), value.userTempId.toString(), mobileController.text, false)));
+              }
+              setState(() {
+                loading = false;
+              });
+              print("registration form submitted");
+              // Dialogs.snackbar(value.message.toString(), context, isError: false);
+            } else if(value.status == false){
+              print(value.message.toString());
+              Dialogs.snackBar(value.message.toString(), context, isError: true);
+              setState(() {
+                loading = false;
+              });
+            } else{
+              setState(() {
+                loading = false;
+              });
+            }
+          });
+        }
+    }
+    }
 }

@@ -8,6 +8,7 @@ import 'package:flutter_bounceable/flutter_bounceable.dart';
 
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
+import 'package:scoring_app/auth/login_screen.dart';
 import 'package:scoring_app/homescreens/home_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
@@ -123,6 +124,7 @@ class _EnterOtpScreenState extends State<EnterOtpScreen> {
                       fontSize: widget.login ? 16.sp : 14.sp
                     ),),
 
+
                     widget.fromSplash
                         ? const SizedBox()
                         : Icon(Icons.arrow_back_ios_outlined, color: Colors.transparent, size: 7.w,),
@@ -144,6 +146,7 @@ class _EnterOtpScreenState extends State<EnterOtpScreen> {
                       fontSize: 12.sp
                   ),),
               ),
+              Text(widget.otp,selectionColor: Colors.black),
               SizedBox(height: 3.h),
               OtpTextField(
                 keyboardType: TextInputType.number,
@@ -175,12 +178,12 @@ class _EnterOtpScreenState extends State<EnterOtpScreen> {
                     incomplete = false;
                   });
                   SharedPreferences preferences = await SharedPreferences.getInstance();
-                  String? userId = preferences.getString("user_id");
+                  String? userId = preferences.getString("user_temp_id");
                   print(widget.login);
                   if(widget.login){
                     verifyLogin(userId);
                   } else if(widget.register){
-                   // verifyRegister(userId, otp);
+                    verifyRegister(userId, otp);
                   }
                 },
                 onCodeChanged: (value){
@@ -352,48 +355,49 @@ class _EnterOtpScreenState extends State<EnterOtpScreen> {
     }
   }
 
-  // verifyRegister(String? userId, String otp) async {
-  //   if(otp == ""){
-  //     Dialogs.snackbar("Enter the OTP", context, isError: true);
-  //   } else{
-  //     setState(() {
-  //       loading = true;
-  //     });
-  //     AuthProvider().registerOtpCheck(otp, userId.toString())
-  //         .then((value) async {
-  //           if(value.status == true){
-  //             Dialogs.snackbar(value.message.toString(), context, isError: false);
-  //             ProfileProvider().getCaptainProfile(context)
-  //             .then((value) async {
-  //               if(value.status == true && value.user?.pinCode.toString() == ""){
-  //                 SharedPreferences preferences = await SharedPreferences.getInstance();
-  //                 preferences.setBool("in_address" , true);
-  //                 if(mounted){
-  //                   Navigator.push(context, ScaleRoute(page: AddAddress(true, false, user)));
-  //                 }
-  //               } else if(value.status == true && value.user?.pinCode.toString() != ""){
-  //                 Navigator.push(context, ScaleRoute(page: const MenuScreen()));
-  //               }
-  //             });
-  //
-  //             setState(() {
-  //               loading = false;
-  //             });
-  //           } else if(value.status == false){
-  //             print("register false");
-  //             Dialogs.snackbar(value.message.toString(), context, isError: true);
-  //             setState(() {
-  //               loading = false;
-  //             });
-  //           } else{
-  //             Dialogs.snackbar("Something went wrong. Please try again.", context, isError: true);
-  //             setState(() {
-  //               loading = false;
-  //             });
-  //           }
-  //     });
-  //   }
-  // }
+  verifyRegister(String? userId, String otp) async {
+    if(otp == ""){
+      Dialogs.snackBar("Enter the OTP", context, isError: true);
+    } else{
+      setState(() {
+        loading = true;
+      });
+      AuthProvider().registerOtpCheck(otp, userId.toString())
+          .then((value) async {
+            if(value.status == true){
+              Dialogs.snackBar(value.message.toString(), context, isError: false);
+              // ProfileProvider().getCaptainProfile(context)
+              // .then((value) async {
+              //   if(value.status == true && value.user?.pinCode.toString() == ""){
+              //     SharedPreferences preferences = await SharedPreferences.getInstance();
+              //     preferences.setBool("in_address" , true);
+              //     if(mounted){
+              //      // Navigator.push(context, ScaleRoute(page: AddAddress(true, false, user)));
+              //     }
+              //   } else if(value.status == true && value.user?.pinCode.toString() != ""){
+              //     //Navigator.push(context, ScaleRoute(page: const MenuScreen()));
+              //   }
+              // });
+              Navigator.push(context, MaterialPageRoute(builder: (builder)=>LoginScreen()));
+
+              setState(() {
+                loading = false;
+              });
+            } else if(value.status == false){
+              print("register false");
+              Dialogs.snackBar(value.message.toString(), context, isError: true);
+              setState(() {
+                loading = false;
+              });
+            } else{
+              Dialogs.snackBar("Something went wrong. Please try again.", context, isError: true);
+              setState(() {
+                loading = false;
+              });
+            }
+      });
+    }
+  }
 
   openExitSheet() {
     var platform = Theme.of(context).platform;
