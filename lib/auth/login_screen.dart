@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bounceable/flutter_bounceable.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
+import 'package:scoring_app/auth/register_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 import '../../utils/styles.dart';
@@ -208,8 +209,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   ),
                                   recognizer: TapGestureRecognizer()
                                     ..onTap = () {
-                                      Navigator.pushNamed(
-                                          context, 'register_screen');
+                                      Navigator.push(context, MaterialPageRoute(builder: (builder)=>RegisterScreen()));
                                     }
                               )
                             ]
@@ -236,7 +236,7 @@ class _LoginScreenState extends State<LoginScreen> {
         if (value.status == true) {
           print(value.message.toString());
           SharedPreferences preferences = await SharedPreferences.getInstance();
-          preferences.setString("user_id", value.data!.userId.toString());
+          preferences.setString("user_temp_id", value.data!.userId.toString());
           preferences.setString("mobile", mobileController.text);
           preferences.setString("otp", value.data!.otp.toString());
           preferences.setBool("isLoginScreen", true);
@@ -244,7 +244,7 @@ class _LoginScreenState extends State<LoginScreen> {
             // Navigator.push(context, ScaleRoute(page: EnterOtpScreen(
             //     true, false, value.loginData!.otp.toString(),
             //     value.loginData!.userId.toString(), mobileController.text, false)));
-            Navigator.push(context, MaterialPageRoute(builder: (context) => EnterOtpScreen(true,true , '', '', '', true)));
+            Navigator.push(context, MaterialPageRoute(builder: (context) => EnterOtpScreen(true,true , value.data!.otp.toString(), '', '', true)));
           }
           setState(() {
             loading = false;
