@@ -1,16 +1,13 @@
 class PlayerStatsModel {
   bool? status;
-  String? message;
+ dynamic message;
   Data? data;
-
   PlayerStatsModel({this.status, this.message, this.data});
-
   PlayerStatsModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
     data = json['data'] != null ? new Data.fromJson(json['data']) : null;
   }
-
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['status'] = this.status;
@@ -21,13 +18,10 @@ class PlayerStatsModel {
     return data;
   }
 }
-
 class Data {
   List<BattingPerformance>? battingPerformance;
   List<BowlingPerformance>? bowlingPerformance;
-
   Data({this.battingPerformance, this.bowlingPerformance});
-
   Data.fromJson(Map<String, dynamic> json) {
     if (json['battingPerformance'] != null) {
       battingPerformance = <BattingPerformance>[];
@@ -42,7 +36,6 @@ class Data {
       });
     }
   }
-
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     if (this.battingPerformance != null) {
@@ -56,23 +49,21 @@ class Data {
     return data;
   }
 }
-
 class BattingPerformance {
-  int? totalMatches;
-  int? totalRuns;
-  int? highestScore;
-  String? average;
-  String? strikeRate;
-  int? totalFour;
-  int? totalDuck;
-  int? hundred;
-  int? totalInnings;
-  int? totalBalls;
-  int? totalNotOut;
-  int? totalSix;
-  int? twoHundred;
-  String? battingFifty;
-
+  dynamic totalMatches;
+  dynamic totalRuns;
+  dynamic highestScore;
+ dynamic average;
+ dynamic strikeRate;
+  dynamic totalFour;
+  dynamic totalDuck;
+  dynamic hundred;
+ dynamic totalInnings;
+  dynamic totalBalls;
+  dynamic totalNotOut;
+  dynamic totalSix;
+  dynamic twoHundred;
+ dynamic battingFifty;
   BattingPerformance(
       {this.totalMatches,
         this.totalRuns,
@@ -88,7 +79,6 @@ class BattingPerformance {
         this.totalSix,
         this.twoHundred,
         this.battingFifty});
-
   BattingPerformance.fromJson(Map<String, dynamic> json) {
     totalMatches = json['total_matches'];
     totalRuns = json['total_runs'];
@@ -105,7 +95,6 @@ class BattingPerformance {
     twoHundred = json['two_hundred'];
     battingFifty = json['batting_fifty'];
   }
-
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['total_matches'] = this.totalMatches;
@@ -125,21 +114,19 @@ class BattingPerformance {
     return data;
   }
 }
-
 class BowlingPerformance {
-  int? totalMatches;
-  int? totalWickets;
-  int? bowlingTotalBalls;
-  int? bowlingMaidens;
-  String? bowlingAverage;
-  String? bowlingStrikeRate;
-  int? bowlingFiveWicket;
-  int? bowlingTotalRuns;
-  int? totalInnings;
-  int? bowlingEconomy;
-  int? bowlingFourWicket;
-  int? bowlingTenWicket;
-
+  dynamic totalMatches;
+  dynamic totalWickets;
+  dynamic bowlingTotalBalls;
+  dynamic bowlingMaidens;
+ dynamic bowlingAverage;
+ dynamic bowlingStrikeRate;
+  dynamic bowlingFiveWicket;
+  dynamic bowlingTotalRuns;
+ dynamic totalInnings;
+  dynamic bowlingEconomy;
+  dynamic bowlingFourWicket;
+  dynamic bowlingTenWicket;
   BowlingPerformance(
       {this.totalMatches,
         this.totalWickets,
@@ -153,7 +140,6 @@ class BowlingPerformance {
         this.bowlingEconomy,
         this.bowlingFourWicket,
         this.bowlingTenWicket});
-
   BowlingPerformance.fromJson(Map<String, dynamic> json) {
     totalMatches = json['total_matches'];
     totalWickets = json['total_wickets'];
@@ -168,7 +154,6 @@ class BowlingPerformance {
     bowlingFourWicket = json['bowling_four_wicket'];
     bowlingTenWicket = json['bowling_ten_wicket'];
   }
-
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['total_matches'] = this.totalMatches;

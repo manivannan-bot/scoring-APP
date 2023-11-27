@@ -163,7 +163,7 @@ class _StatsBattingState extends State<StatsBatting> {
                             'Average',
                             style: fontRegular.copyWith(fontSize: 12.sp, color: AppColor.textGrey),
                           ),
-                          SizedBox(width: 15.w),
+                          SizedBox(width: 12.w),
                           Text(
                             '${widget.battingPerformance!.first.average}',
                             style: fontRegular.copyWith(fontSize: 12.sp, color: AppColor.blackColour),

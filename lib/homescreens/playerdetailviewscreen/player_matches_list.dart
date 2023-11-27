@@ -71,11 +71,11 @@ class _PlayerMatchesViewScreenState extends State<PlayerMatchesViewScreen> {
                 itemBuilder: (context, int index) {
                   final item = playerMatchesModel!.data![index];
 
-                  if (playerMatchesModel!.data![index].teams!.matchStatus == 1) {
+                  if (playerMatchesModel!.data![index].teams!.currentInnings == 1||playerMatchesModel!.data![index].teams!.currentInnings == 2) {
                     return IndividualPlayerLiveMatches(playerMatchesModel!.data![index].teams,playerMatchesModel!.data![index].teamInnings);
-                  } else if (playerMatchesModel!.data![index].teams!.matchStatus == 1) {
+                  } else if (playerMatchesModel!.data![index].teams!.currentInnings == 4) {
                     return IndividualPlayerUpcomingMatches();
-                  }  else if (playerMatchesModel!.data![index].teams!.matchStatus == 2) {
+                  }  else if (playerMatchesModel!.data![index].teams!.currentInnings == 3) {
                     return IndividualPlayerCompletedMatches(playerMatchesModel!.data![index].teams,playerMatchesModel!.data![index].teamInnings);
 
                   }

@@ -201,7 +201,6 @@ class _CommentaryFourSixState extends State<CommentaryFourSix> {
           const Divider(
             color: Color(0xffD3D3D3),
           ),
-
           MediaQuery.removePadding(
             context: context,
             removeTop: true, // Set to true to remove top padding
@@ -239,8 +238,6 @@ class _CommentaryFourSixState extends State<CommentaryFourSix> {
                                     color: AppColor.blackColour,
                                   )),
                             ])),
-
-
                         SizedBox(
                           height: 2.h,
                         ),
